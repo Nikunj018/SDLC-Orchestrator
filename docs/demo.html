@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo Script: Jira → Deployment — SDLC Orchestrator</title>
+  <meta name="description" content="Narrated 10-step walkthrough — including the QA bug-loop where the Lead Agent routes work back to the Developer." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="doc.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">⌬</span>
+        <span class="brand-name">SDLC<em>Orchestrator</em></span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html#demo">Live demo</a>
+        <a href="index.html#impact">Impact</a>
+        <a href="index.html#how">How it works</a>
+        <a href="library.html">Documents</a>
+        <a href="index.html#contact" class="nav-cta">Book a workshop</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="doc-hero">
+    <div class="doc-hero-inner">
+      <div class="doc-eyebrow">03 · Demo Script</div>
+      <h1 class="doc-title">Jira → Deployment Walkthrough</h1>
+      <p class="doc-subtitle">Ten steps. Five short prompts by the engineer. Zero lines of code typed.</p>
+      <div class="doc-meta">Companion to the live interactive demo on the home page</div>
+    </div>
+  </section>
+
+  <article class="doc-content">
+
+    <h2>The Setup</h2>
+    <p>PM creates Jira ticket: <strong>PROJ-1842 — Customers should be able to bulk-export their invoice history as CSV.</strong></p>
+    <p>Nothing happens. The orchestrator does not chase tickets. It waits for an engineer.</p>
+
+    <h2>Step 1 — Engineer triggers in their AI Coding CLI</h2>
+    <p>In their terminal, the engineer opens their AI Coding CLI and types:</p>
+    <pre>$ start working on PROJ-1842</pre>
+    <p>One prompt. That is the entire invocation. The orchestrator runs in the same CLI surface the engineer already uses for ad-hoc coding tasks — no new tool to learn.</p>
+
+    <h2>Step 2 — Lead Agent reads, asks questions, waits</h2>
+    <p>The Lead Agent — the tech lead of the AI team — reads the ticket and the surrounding codebase. It checks 12 similar past tickets. It identifies three things needing clarification.</p>
+    <p>It posts a comment on Jira:</p>
+    <blockquote>
+      <p>Before I orchestrate work, three things need clarification:</p>
+      <p>1. Date range — hard limit or default?<br/>2. Refunds and credit notes — included?<br/>3. Audit logging required for bulk exports?</p>
+      <p>Pausing. Re-trigger me with <code>continue</code> when ready.</p>
+    </blockquote>
+    <p><strong>The Lead Agent does not start work.</strong> It pauses.</p>
+
+    <h2>Step 3 — PM answers. Engineer types <code>continue</code>. BA writes stories.</h2>
+    <p>PM answers on Jira (~3 min between meetings).</p>
+    <p>Engineer types:</p>
+    <pre>$ continue on PROJ-1842</pre>
+    <p>Lead Agent delegates to the <strong>BA sub-agent</strong> → drafts stories, acceptance criteria, edge cases → <strong>Product Owner approves</strong> in Slack (~4 min).</p>
+
+    <h2>Step 4 — Architecture planned. Developer codes.</h2>
+    <p>Lead Agent delegates to the <strong>Architecture sub-agent</strong>:</p>
+    <ul>
+      <li>Impact: 3 services, 1 frontend module</li>
+      <li>Plan follows team's existing ADR-0142 pattern for background jobs</li>
+      <li><strong>Tech Lead approves</strong> (~5 min)</li>
+    </ul>
+    <p>Lead Agent delegates to the <strong>Developer sub-agent</strong>:</p>
+    <ul>
+      <li>Branch: <code>feature/PROJ-1842-invoice-export</code></li>
+      <li>14 files modified, 4 added</li>
+      <li>6 commits pushed</li>
+    </ul>
+
+    <h2>Step 5 — QA finds bugs. Lead Agent routes back to Developer.</h2>
+    <p>The <strong>QA sub-agent</strong> runs the test suite:</p>
+    <pre>✗ 2 tests failing:
+  · test_export_date_range_max — 60mo boundary off-by-one
+  · test_audit_event_emission — event not emitted on background path</pre>
+    <p>This is real orchestration. The Lead Agent does not paper over QA findings. It routes back to the Developer sub-agent — exactly as a real tech lead would.</p>
+    <blockquote>
+      <p>Lead Agent · Routing back to Developer sub-agent with QA findings.</p>
+    </blockquote>
+
+    <h2>Step 6 — Developer fixes. QA re-validates. All green.</h2>
+    <p>The Developer sub-agent patches:</p>
+    <ul>
+      <li><code>export.go:84</code> (boundary check)</li>
+      <li><code>export.go:142</code> (audit emit in background path)</li>
+    </ul>
+    <p>QA sub-agent re-runs:</p>
+    <ul>
+      <li>47/47 tests passing</li>
+      <li>Coverage on new code: 91%</li>
+    </ul>
+    <p>This back-and-forth is what makes the orchestrator a real engineering team, not a one-shot code generator.</p>
+
+    <h2>Step 7 — Security + Docs done. "Raise the PR?"</h2>
+    <p><strong>Security sub-agent</strong>: SAST clean · secrets clean · multi-tenant isolation verified.</p>
+    <p><strong>Documentation sub-agent</strong>: help center updated · release notes drafted · OpenAPI annotations validated.</p>
+    <p>Lead Agent surfaces the most consequential decision back to the engineer:</p>
+    <pre>Lead Agent · Should I raise the PR? [y/N]
+
+$ y</pre>
+    <p>Lead Agent → Developer sub-agent → <strong>PR #4522 opened</strong> with reviewers tagged.</p>
+
+    <h2>Step 8 — Tech Lead invokes PR Reviewer Agent</h2>
+    <p>The PR Reviewer Agent is <strong>not</strong> auto-triggered. The Tech Lead invokes it on demand from Slack:</p>
+    <blockquote>
+      <p>Tech Lead: <code>@pr-reviewer review PR #4522</code></p>
+    </blockquote>
+    <p>PR Reviewer Agent posts inline comments + a structured summary:</p>
+    <ul>
+      <li>3 actionable items (threshold → config, error wrapping <code>%w</code>, variable rename)</li>
+      <li>Items needing human judgment (rate-limit confirmation, customer-facing copy)</li>
+    </ul>
+    <p>Tech Lead adds their own judgment notes. AI assists; humans decide.</p>
+
+    <h2>Step 9 — Engineer resolves via the same AI Coding CLI</h2>
+    <p>The engineer doesn't manually type fixes. In the same CLI they triggered the work, they type:</p>
+    <pre>$ resolve comments on PR #4522</pre>
+    <p>The CLI:</p>
+    <ul>
+      <li>Fetches 4 open comments</li>
+      <li>Reads the affected code</li>
+      <li>Applies all 4 fixes</li>
+      <li>Replies to each comment inline</li>
+      <li>Pushes 3 commits to the PR branch</li>
+      <li>Notifies the Tech Lead for re-review</li>
+    </ul>
+    <p>Engineer reviews the diff and confirms. They directed — they did not type code.</p>
+    <p>Tech Lead re-reviews. Approves. Merged.</p>
+
+    <h2>Step 10 — Deploy. Report. Done.</h2>
+    <p><strong>DevOps sub-agent</strong>:</p>
+    <ul>
+      <li>Deploy checklist generated</li>
+      <li>Rollback plan ready</li>
+      <li>Environment validation passed</li>
+    </ul>
+    <p><strong>Release Manager</strong> approves in Slack (~3 min).</p>
+    <p>Deploy executes. Metrics monitored — no anomalies.</p>
+    <p><strong>Reporting sub-agent</strong>:</p>
+    <ul>
+      <li>Jira → Done</li>
+      <li>Delivery summary posted to <code>#eng-delivery</code></li>
+      <li>Metrics registered</li>
+    </ul>
+
+    <h2>The Numbers</h2>
+    <table>
+      <tbody>
+        <tr><td><strong>Total elapsed time</strong></td><td>~4 hours</td></tr>
+        <tr><td><strong>Engineer typing</strong></td><td>~5 short CLI prompts</td></tr>
+        <tr><td><strong>Lines of code typed by hand</strong></td><td>0</td></tr>
+        <tr><td><strong>Total human attention</strong></td><td>~30 minutes focused approvals &amp; verification</td></tr>
+        <tr><td><strong>Engineer's role</strong></td><td>Orchestrator, not implementer</td></tr>
+      </tbody>
+    </table>
+
+    <h2>What This Proves</h2>
+    <p><strong>The role-shift.</strong> The engineer never wrote a line of code. They orchestrated.</p>
+    <p><strong>The conservative model.</strong> The Lead Agent never started work blindly — it asked questions. Never raised the PR unprompted — it asked first.</p>
+    <p><strong>Real orchestration.</strong> When QA found bugs, the Lead Agent routed back to the Developer. Like a real tech lead with a real team.</p>
+    <p><strong>Humans at every gate.</strong> PM clarified. Product Owner approved BA. Tech Lead approved architecture and code. Engineer authorized PR. Release Manager approved deploy.</p>
+
+    <blockquote>
+      <p>The team didn't get smaller. The team got a new operating model.</p>
+    </blockquote>
+
+    <p style="text-align: center; margin-top: 40px;"><em>See the live interactive version at <a href="index.html#demo">the home page demo</a>.</em></p>
+
+  </article>
+
+  <div class="doc-footer-nav">
+    <a href="architecture.html" class="doc-footer-link">← Technical Architecture</a>
+    <a href="discovery.html" class="doc-footer-link doc-footer-link-primary">Next: Discovery Framework →</a>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-mark">⌬</span>
+        <span>SDLC<em>Orchestrator</em></span>
+      </div>
+      <div class="footer-tag">Stop writing code. Start orchestrating it.</div>
+      <div class="footer-meta">© 2026 · Strictly confidential</div>
+    </div>
+  </footer>
+
+</body>
+</html>

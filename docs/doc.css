@@ -1,0 +1,364 @@
+/* ============================================
+   Doc Page Styles — content pages (proposal, architecture, etc.)
+   Imported alongside styles.css
+   ============================================ */
+
+.doc-hero {
+  padding: 80px 0 40px;
+  background: radial-gradient(ellipse at top, rgba(74, 222, 128, 0.05), transparent 60%);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.doc-hero-inner {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 32px;
+  text-align: center;
+}
+
+.doc-eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(74, 222, 128, 0.08);
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  margin-bottom: 24px;
+}
+
+.doc-title {
+  font-size: clamp(32px, 4.5vw, 52px);
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-bottom: 16px;
+}
+
+.doc-subtitle {
+  font-size: 18px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.doc-meta {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 16px;
+  padding: 6px 12px;
+  background: var(--bg-3);
+  border-radius: 4px;
+  border: 1px solid var(--border-soft);
+}
+
+/* ============================================
+   DOC CONTENT — prose
+   ============================================ */
+.doc-content {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 60px 32px 80px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text-muted);
+}
+
+.doc-content h2 {
+  font-size: clamp(24px, 2.8vw, 32px);
+  font-weight: 700;
+  color: var(--text);
+  margin: 56px 0 20px;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.doc-content h2:first-child { margin-top: 0; }
+
+.doc-content h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 36px 0 14px;
+  letter-spacing: -0.01em;
+}
+
+.doc-content h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 24px 0 10px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: var(--accent);
+}
+
+.doc-content p {
+  margin: 14px 0;
+  color: var(--text-muted);
+}
+
+.doc-content p strong, .doc-content li strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.doc-content em { color: var(--text); font-style: italic; }
+
+.doc-content ul, .doc-content ol {
+  margin: 14px 0 14px 24px;
+  padding: 0;
+}
+
+.doc-content li {
+  margin: 6px 0;
+  line-height: 1.7;
+}
+
+.doc-content ul li::marker {
+  color: var(--accent);
+}
+
+.doc-content code {
+  background: var(--bg-3);
+  color: var(--accent);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 0.88em;
+  border: 1px solid var(--border-soft);
+}
+
+.doc-content pre {
+  background: var(--bg-cli);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  padding: 18px 22px;
+  overflow-x: auto;
+  margin: 20px 0;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #c4cdd6;
+}
+
+.doc-content pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.doc-content blockquote {
+  border-left: 3px solid var(--accent);
+  background: linear-gradient(90deg, rgba(74, 222, 128, 0.05), transparent);
+  margin: 24px 0;
+  padding: 18px 24px;
+  font-style: italic;
+  color: var(--text);
+  border-radius: 0 8px 8px 0;
+}
+
+.doc-content blockquote p { margin: 6px 0; }
+
+.doc-content a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(74, 222, 128, 0.3);
+  transition: all 0.15s;
+}
+
+.doc-content a:hover {
+  border-bottom-style: solid;
+  border-bottom-color: var(--accent);
+}
+
+.doc-content hr {
+  border: none;
+  height: 1px;
+  background: var(--border);
+  margin: 48px 0;
+}
+
+.doc-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 14px;
+}
+
+.doc-content table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--text);
+  padding: 12px 16px;
+  background: var(--bg-3);
+  border-bottom: 2px solid var(--accent);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.doc-content table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--text-muted);
+  vertical-align: top;
+}
+
+.doc-content table tr:hover td {
+  background: rgba(74, 222, 128, 0.02);
+}
+
+.doc-content .callout {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 28px 0;
+}
+
+.doc-content .callout-title {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* ============================================
+   DOC FOOTER NAV
+   ============================================ */
+.doc-footer-nav {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 40px 32px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.doc-footer-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 18px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-3);
+  transition: all 0.15s;
+}
+
+.doc-footer-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.doc-footer-link-primary {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+.doc-footer-link-primary:hover {
+  background: #5ee896;
+  color: var(--bg);
+}
+
+/* ============================================
+   LIBRARY PAGE
+   ============================================ */
+.library-grid {
+  max-width: 1100px;
+  margin: 40px auto 0;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.library-card {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px 28px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.library-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+}
+
+.lib-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+
+.lib-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.lib-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 18px;
+  flex: 1;
+}
+
+.lib-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-dim);
+  padding-top: 14px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.lib-meta-item span {
+  color: var(--text);
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.lib-arrow {
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .library-grid { grid-template-columns: 1fr; padding: 0 20px; }
+  .doc-content { padding: 40px 20px 60px; }
+}

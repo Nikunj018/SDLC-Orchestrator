@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technical Architecture — SDLC Orchestrator</title>
+  <meta name="description" content="The architecture of the SDLC Orchestrator — Lead Agent, sub-agents, MCP integration, governance, deployment." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="doc.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">⌬</span>
+        <span class="brand-name">SDLC<em>Orchestrator</em></span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html#demo">Live demo</a>
+        <a href="index.html#impact">Impact</a>
+        <a href="index.html#how">How it works</a>
+        <a href="library.html">Documents</a>
+        <a href="index.html#contact" class="nav-cta">Book a workshop</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="doc-hero">
+    <div class="doc-hero-inner">
+      <div class="doc-eyebrow">02 · Technical Architecture</div>
+      <h1 class="doc-title">The SDLC Orchestrator Architecture</h1>
+      <p class="doc-subtitle">Hierarchical multi-agent orchestration · engineer-triggered · MCP-integrated · governance by design.</p>
+      <div class="doc-meta">For: CTOs · Principal Engineers · Architects</div>
+    </div>
+  </section>
+
+  <article class="doc-content">
+
+    <h2>1. Design Principles</h2>
+    <ol>
+      <li><strong>Engineer-triggered, never autonomous.</strong> Work flows only when an engineer types a prompt in their AI Coding CLI.</li>
+      <li><strong>Lead Agent = the tech lead of an AI team.</strong> A reasoning agent that coordinates specialists, just like a real engineering lead.</li>
+      <li><strong>Questions before work.</strong> The Lead Agent's default is to clarify on Jira and wait.</li>
+      <li><strong>Real orchestration includes rework.</strong> When QA finds bugs, the Lead Agent routes back to the Developer sub-agent.</li>
+      <li><strong>Asks before raising PRs.</strong> Most consequential action requires explicit consent.</li>
+      <li><strong>Bespoke per client.</strong> Built around the client's codebase, tools, MCPs, and conventions.</li>
+    </ol>
+
+    <h2>2. The Trigger Surface — AI Coding CLI</h2>
+    <p>The engineer's interface to the entire system is their <strong>AI Coding CLI in the terminal</strong>. The same CLI the engineer already uses for ad-hoc coding tasks becomes the trigger surface for the orchestrator. No new tool to learn.</p>
+    <p>The engineer types prompts like:</p>
+    <ul>
+      <li><code>start working on TICKET-X</code> — invoke the Lead Agent to begin orchestration</li>
+      <li><code>continue on TICKET-X</code> — resume after the Lead Agent paused on clarification</li>
+      <li><code>y</code> (or <code>yes</code>) — confirm "Raise the PR?" prompt</li>
+      <li><code>resolve comments on PR #N</code> — close the PR review loop</li>
+    </ul>
+    <p>All output streams to the same CLI. Lead Agent narration, sub-agent updates, errors, and final summary all appear in the engineer's terminal.</p>
+
+    <h2>3. The Architecture</h2>
+<pre>                  ENGINEER (in AI Coding CLI)
+                          │
+                          ▼
+              ┌─────────────────────────┐
+              │     LEAD AGENT          │  reads · asks · plans
+              │ (tech lead of AI team)  │  delegates · synthesizes
+              └────────────┬────────────┘  routes rework · asks "raise PR?"
+                           │
+   ┌──────┬──────┬──────┬──┴───┬──────┬──────┬──────┐
+   ▼      ▼      ▼      ▼      ▼      ▼      ▼      ▼
+  ┌──┐  ┌──┐  ┌──┐  ┌──┐    ┌──┐  ┌──┐  ┌──┐  ┌──┐
+  │BA│  │Ar│  │Dv│  │QA│    │Sc│  │Dc│  │Op│  │Rp│
+  └──┘  └──┘  └──┘  └──┘    └──┘  └──┘  └──┘  └──┘
+
+  ─── invoked separately by humans ───
+
+  ★ PR Reviewer Agent     Tech Lead: "@pr-reviewer review PR #X"
+  ★ AI Coding CLI         Engineer in terminal: "resolve PR comments"</pre>
+
+    <h2>4. The Lead Agent</h2>
+    <p>The reasoning layer of the system. A real tech lead, but AI.</p>
+    <ul>
+      <li><strong>Receives the trigger</strong> from the engineer's CLI</li>
+      <li><strong>Reads the ticket + codebase context + similar past work</strong></li>
+      <li><strong>Decides to ask or act.</strong> Default = ask. Posts clarifying questions on Jira. Pauses.</li>
+      <li><strong>Waits for re-trigger</strong> — does not auto-resume</li>
+      <li><strong>Plans and delegates</strong> to sub-agents in the right order</li>
+      <li><strong>Routes rework</strong> — when QA finds bugs, routes back to Developer</li>
+      <li><strong>Synthesizes</strong> sub-agent outputs into single Jira updates</li>
+      <li><strong>Surfaces approvals</strong> to humans at consequential gates</li>
+      <li><strong>Asks before raising PRs</strong> — explicit yes required from the engineer</li>
+      <li><strong>Escalates ambiguity</strong> to humans rather than guessing</li>
+    </ul>
+
+    <h2>5. Sub-Agents</h2>
+    <table>
+      <thead>
+        <tr><th>Sub-Agent</th><th>Function</th><th>Approval gate</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Business Analysis</strong></td><td>User stories, acceptance criteria, edge cases</td><td>Product Owner</td></tr>
+        <tr><td><strong>Architecture</strong></td><td>Impact analysis, implementation plan</td><td>Tech Lead</td></tr>
+        <tr><td><strong>Developer</strong></td><td>Branch code, commits, raises PR on approval</td><td>PR raised only on engineer's <code>y</code></td></tr>
+        <tr><td><strong>QA &amp; Testing</strong></td><td>Tests, coverage · routes failures back through Lead</td><td>Merge gate</td></tr>
+        <tr><td><strong>Security</strong></td><td>SAST, secrets, compliance, isolation checks</td><td>Required for high-severity findings</td></tr>
+        <tr><td><strong>Documentation</strong></td><td>Docs, release notes, OpenAPI annotations</td><td>Optional</td></tr>
+        <tr><td><strong>DevOps</strong></td><td>Deploy checklist, rollback plan</td><td>Release Manager</td></tr>
+        <tr><td><strong>Reporting</strong></td><td>Jira, Slack, metrics</td><td>None (read/comm only)</td></tr>
+      </tbody>
+    </table>
+    <p>Sub-agents do <strong>not</strong> talk to each other. They report only to the Lead Agent.</p>
+    <p>Every sub-agent is built bespoke per client — using the client's MCPs, conventions, and codebase as context.</p>
+
+    <h2>6. The Two Human-Invoked Helpers</h2>
+    <h3>PR Reviewer Agent</h3>
+    <ul>
+      <li>Invoked by humans (Tech Lead) on demand</li>
+      <li>Posts inline comments + structured summary with confidence indicators</li>
+      <li>Augments — does not replace — the human reviewer</li>
+      <li>Never approves or merges</li>
+    </ul>
+    <h3>AI Coding CLI — Resolution Mode</h3>
+    <ul>
+      <li>Same CLI the engineer triggered the work with</li>
+      <li>Engineer types: <code>resolve comments on PR #X</code></li>
+      <li>CLI fetches PR comments, applies fixes, replies inline, pushes</li>
+      <li>Engineer reviews the diff and approves the change</li>
+    </ul>
+
+    <h2>7. Triggers Summary</h2>
+    <table>
+      <thead>
+        <tr><th>Trigger</th><th>Who</th><th>Starts</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>start working on TICKET-X</code></td><td>Engineer (AI Coding CLI)</td><td>Lead Agent reads ticket</td></tr>
+        <tr><td><code>continue on TICKET-X</code></td><td>Engineer (AI Coding CLI)</td><td>Lead Agent resumes</td></tr>
+        <tr><td><code>y</code> to "Raise PR?"</td><td>Engineer (AI Coding CLI)</td><td>Developer sub-agent raises PR</td></tr>
+        <tr><td><code>@pr-reviewer review PR #N</code></td><td>Tech Lead (Slack)</td><td>PR Reviewer Agent comments</td></tr>
+        <tr><td><code>resolve comments on PR #N</code></td><td>Engineer (AI Coding CLI)</td><td>CLI resolves PR comments</td></tr>
+        <tr><td>"Approve deployment"</td><td>Release Manager (Slack)</td><td>DevOps sub-agent deploys</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <div class="callout-title">Non-negotiable</div>
+      <p>The orchestrator never auto-triggers itself. Every consequential transition is human-initiated.</p>
+    </div>
+
+    <h2>8. Custom-Built Per Client (Phase 3)</h2>
+    <p>This is the work we do in Phase 3 that distinguishes us from a DIY effort:</p>
+    <ul>
+      <li><strong>Codebase parallel context.</strong> Symbol-aware retrieval, ADR indexing, runbook coverage.</li>
+      <li><strong>Custom sub-agents.</strong> Each sub-agent's prompts, tools, retrieval surface, and guardrails tuned to your stack.</li>
+      <li><strong>Bespoke MCP servers.</strong> Custom MCPs for your internal systems where the standard set doesn't fit.</li>
+      <li><strong>Workflow tuning.</strong> Lead Agent's clarifying-question library, approval flows, escalation rules tuned to your team.</li>
+      <li><strong>Convention-aware code generation.</strong> Every output follows your team's style.</li>
+    </ul>
+
+    <h2>9. Integration Layer</h2>
+    <p>All integrations via <strong>MCP (Model Context Protocol)</strong> servers — standard surface, versioned, scoped, testable, observable.</p>
+    <p>Standard set: Jira/Linear · GitHub/GitLab · CI/CD (GHA, CircleCI, Jenkins) · Slack/Teams · Confluence/Notion · Datadog/Grafana · Snyk/SonarQube/Semgrep · AWS/GCP/Azure.</p>
+    <p>Bespoke MCP servers built for client-specific internal systems.</p>
+
+    <h2>10. Governance &amp; Security</h2>
+    <ul>
+      <li><strong>Identity &amp; RBAC.</strong> Agents authenticate as scoped service identities.</li>
+      <li><strong>Policy-as-code.</strong> Approval requirements and scope restrictions version-controlled.</li>
+      <li><strong>Audit log.</strong> Every action emits a structured event.</li>
+      <li><strong>Secrets.</strong> Short-lived tokens fetched at runtime. Never embedded.</li>
+      <li><strong>Killswitch.</strong> Per-workflow and global. Roll back without code deploys.</li>
+      <li><strong>Cost controls.</strong> Per-workflow / per-team budgets enforced.</li>
+    </ul>
+
+    <h2>11. Deployment Topology</h2>
+    <ul>
+      <li><strong>Client cloud (default).</strong> Platform runs in your AWS/GCP/Azure account.</li>
+      <li><strong>Hybrid.</strong> Sensitive workloads use private models; less-sensitive use commercial frontier.</li>
+      <li><strong>Air-gapped.</strong> All components including models in private infrastructure.</li>
+    </ul>
+
+    <h2>12. Resilience</h2>
+    <table>
+      <thead>
+        <tr><th>Failure mode</th><th>Mitigation</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Model API outage</td><td>Failover to alternate provider</td></tr>
+        <tr><td>Integration outage</td><td>Workflows queue, resume; humans notified</td></tr>
+        <tr><td>Hallucinated tool calls</td><td>Tool registry rejects unknown calls</td></tr>
+        <tr><td>Cost spike</td><td>Per-workflow budget; circuit breaker</td></tr>
+        <tr><td>Confidently wrong agent</td><td>Human approval gates; cross-checks</td></tr>
+        <tr><td>QA finds bugs</td><td>Lead Agent routes back to Developer; loops until clean</td></tr>
+      </tbody>
+    </table>
+
+    <h2>13. Why This, Not Off-the-Shelf</h2>
+    <table>
+      <thead>
+        <tr><th></th><th>Off-the-shelf</th><th>This Orchestrator</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Scope</strong></td><td>Single task</td><td>Whole-SDLC orchestration with rework loops</td></tr>
+        <tr><td><strong>Trigger</strong></td><td>Per-prompt</td><td>One prompt → entire team</td></tr>
+        <tr><td><strong>Coordination</strong></td><td>None</td><td>Lead Agent tuned to your team</td></tr>
+        <tr><td><strong>Codebase context</strong></td><td>Generic</td><td>Parallel to your repos</td></tr>
+        <tr><td><strong>Customization</strong></td><td>None</td><td>Bespoke from week one</td></tr>
+        <tr><td><strong>Governance</strong></td><td>Vendor's</td><td>Yours</td></tr>
+        <tr><td><strong>Ownership</strong></td><td>Vendor</td><td>You</td></tr>
+      </tbody>
+    </table>
+
+    <h2>14. Tech Choices (Representative)</h2>
+    <ul>
+      <li><strong>Models:</strong> Best-fit per workload — frontier for reasoning, smaller for classification, OSS for air-gapped</li>
+      <li><strong>Orchestration runtime:</strong> Temporal / Prefect / LangGraph</li>
+      <li><strong>Vector store:</strong> pgvector / Weaviate / Pinecone / Qdrant</li>
+      <li><strong>Tool protocol:</strong> MCP</li>
+      <li><strong>Deployment:</strong> Containerized; via your existing platform (K8s / ECS / Cloud Run)</li>
+      <li><strong>Observability:</strong> OpenTelemetry; integrated with your stack</li>
+      <li><strong>Secrets:</strong> Vault / AWS Secrets Manager / GCP Secret Manager</li>
+    </ul>
+    <p>Every choice justified during Phase 2.</p>
+
+    <blockquote>
+      <p>The architecture above is the foundation. Adapted per client; principles non-negotiable. Bring your architects and security lead to the technical deep-dive.</p>
+    </blockquote>
+
+  </article>
+
+  <div class="doc-footer-nav">
+    <a href="proposal.html" class="doc-footer-link">← Executive Proposal</a>
+    <a href="demo.html" class="doc-footer-link doc-footer-link-primary">Next: Demo Script →</a>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-mark">⌬</span>
+        <span>SDLC<em>Orchestrator</em></span>
+      </div>
+      <div class="footer-tag">Stop writing code. Start orchestrating it.</div>
+      <div class="footer-meta">© 2026 · Strictly confidential</div>
+    </div>
+  </footer>
+
+</body>
+</html>

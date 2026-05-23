@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discovery Framework — SDLC Orchestrator</title>
+  <meta name="description" content="Phase 1 playbook — stakeholder interviews, SDLC flow mapping, repetitive-work audit, toolchain assessment." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="doc.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">⌬</span>
+        <span class="brand-name">SDLC<em>Orchestrator</em></span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html#demo">Live demo</a>
+        <a href="index.html#impact">Impact</a>
+        <a href="index.html#how">How it works</a>
+        <a href="library.html">Documents</a>
+        <a href="index.html#contact" class="nav-cta">Book a workshop</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="doc-hero">
+    <div class="doc-hero-inner">
+      <div class="doc-eyebrow">04 · Discovery Framework</div>
+      <h1 class="doc-title">Phase 1 Playbook</h1>
+      <p class="doc-subtitle">How we run the discovery week — and what your team can expect.</p>
+      <div class="doc-meta">For: Engineering Managers · Delivery Heads · Engagement Owners</div>
+    </div>
+  </section>
+
+  <article class="doc-content">
+
+    <h2>Goal</h2>
+    <p>Produce an evidence-based, client-specific diagnostic of the SDLC that drives the <strong>bespoke build in Phase 3</strong>. We do not start Phase 3 without it.</p>
+    <p>By end of Week 1, we answer:</p>
+    <ol>
+      <li>How does work actually flow through this org from idea to production?</li>
+      <li>Where does it wait, repeat, drift, or break?</li>
+      <li>Which workflows have the highest orchestration leverage?</li>
+      <li><strong>What clarifying questions should the Lead Agent ask by default</strong> for this org's dominant ticket types?</li>
+      <li><strong>Where do human approval gates belong</strong> — and who approves what?</li>
+      <li><strong>Which sub-agents need the most customization</strong> for this team's conventions, stack, and codebase?</li>
+      <li><strong>What custom MCPs are needed</strong> for the client's internal tools and systems?</li>
+      <li>What constraints (technical, regulatory, cultural) must shape the design?</li>
+    </ol>
+
+    <h2>Week 1 Cadence</h2>
+    <table>
+      <thead>
+        <tr><th>Day</th><th>Focus</th><th>Format</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1 AM</td><td>Kickoff with executive sponsors</td><td>60 min</td></tr>
+        <tr><td>1 PM</td><td>CTO + engineering leadership deep-dive</td><td>90 min</td></tr>
+        <tr><td>2</td><td>Engineering manager interviews (per team)</td><td>45 min each</td></tr>
+        <tr><td>3 AM</td><td>QA, DevOps, Security leads</td><td>45 min each</td></tr>
+        <tr><td>3 PM</td><td>Product &amp; delivery leads</td><td>45 min each</td></tr>
+        <tr><td>4 AM</td><td>Shadowing — sprint planning / refinement / release</td><td>Observe</td></tr>
+        <tr><td>4 PM</td><td>Toolchain audit with platform team</td><td>Working session</td></tr>
+        <tr><td>5 AM</td><td>Synthesis</td><td>Internal</td></tr>
+        <tr><td>5 PM</td><td>Diagnostic playback with leadership</td><td>90 min</td></tr>
+      </tbody>
+    </table>
+    <p>Total: ~12–15 hours of stakeholder time.</p>
+
+    <h2>Interview Frameworks (per role)</h2>
+
+    <h3>Founders / CEO</h3>
+    <ul>
+      <li>12–18 month roadmap, headcount plan, market pressure?</li>
+      <li>If AI in the SDLC worked, what would have visibly changed by end of 2026?</li>
+      <li>Where does engineering under-deliver — people, process, or tooling?</li>
+      <li>Cultural lines we should not cross?</li>
+    </ul>
+
+    <h3>CTO / VP Engineering</h3>
+    <ul>
+      <li>Walk us through a typical feature from request to production</li>
+      <li>Where does the time actually go on a slow delivery post-mortem?</li>
+      <li>Consistent bottleneck constraints?</li>
+      <li>Current AI usage pattern across the org?</li>
+      <li>Security/compliance posture we design around?</li>
+      <li>If one high-impact automation in 6 weeks, where would you start?</li>
+    </ul>
+
+    <h3>Engineering Managers</h3>
+    <ul>
+      <li>Last 3 features shipped — what was easy, hard, annoying?</li>
+      <li>Proportion of engineer's week on operational coordination vs. building?</li>
+      <li>Where does work most often boomerang back?</li>
+      <li>Refinement process — judgment vs. operational?</li>
+    </ul>
+
+    <h3>QA Leads</h3>
+    <ul>
+      <li>Who writes tests today?</li>
+      <li>Typical test coverage on new code — honestly?</li>
+      <li>Where do regressions originate?</li>
+      <li>What QA work do you wish wasn't manual?</li>
+    </ul>
+
+    <h3>DevOps / SRE</h3>
+    <ul>
+      <li>Walk us through a deploy from merge to traffic</li>
+      <li>Deploy rollback / hotfix frequency?</li>
+      <li>Incident response flow?</li>
+      <li>What deployment decisions don't actually need human attention?</li>
+    </ul>
+
+    <h3>Security</h3>
+    <ul>
+      <li>Compliance regime (SOC 2, ISO 27001, HIPAA, regional)?</li>
+      <li>Where are security gates today, and are they effective?</li>
+      <li>Stance on AI agents having scoped access to source, CI, production?</li>
+    </ul>
+
+    <h3>Product Managers / Delivery Heads</h3>
+    <ul>
+      <li>How do requirements move from idea to engineering-ready?</li>
+      <li>Where do PMs chase status?</li>
+      <li>What gets lost between product and engineering?</li>
+    </ul>
+
+    <h2>The SDLC Flow Map</h2>
+    <p>Document each stage with:</p>
+    <ul>
+      <li>Average wait time</li>
+      <li>Average cycle time</li>
+      <li>Tools touched</li>
+      <li>Human roles involved</li>
+      <li>Common pain modes</li>
+      <li>Rework / failure frequency</li>
+    </ul>
+    <p>Stages: Demand → Refinement → Development → Review → QA → Security → Deploy → Reporting.</p>
+
+    <h2>Repetitive-Work Audit Matrix</h2>
+<pre>              HIGH-FREQ       MED-FREQ       LOW-FREQ
+            ┌──────────────┬──────────────┬──────────────┐
+  JUDGMENT  │ Human only   │ Human only   │ Human only   │
+            ├──────────────┼──────────────┼──────────────┤
+  MOSTLY-J  │ AI-assisted  │ AI-assisted  │ Human only   │
+            ├──────────────┼──────────────┼──────────────┤
+  MOSTLY-OP │ AUTOMATE     │ AUTOMATE     │ Maybe        │
+            ├──────────────┼──────────────┼──────────────┤
+  OPERATION │ ★ PRIME ★    │ AUTOMATE     │ Maybe        │
+            └──────────────┴──────────────┴──────────────┘</pre>
+    <p>Prime target = Operational + High-Frequency. Judgment work stays with humans by design.</p>
+
+    <h2>Toolchain Audit</h2>
+    <p>For each tool capture: usage pattern · API maturity · auth model · existing integrations · pain points.</p>
+    <p>Categories: Ticketing · Source control · CI/CD · Communication · Documentation · Observability · Security · Cloud · Identity · Secrets · Customer support.</p>
+
+    <h2>Shadowing</h2>
+    <p>Interviews capture what people <em>say</em>. Shadowing captures what they <em>do</em>. We observe at minimum: sprint planning, refinement, PR review, release, incident response, standup, customer bug-fix flow. Discrepancies are gold.</p>
+
+    <h2>Constraints Inventory</h2>
+    <ul>
+      <li><strong>Technical:</strong> legacy APIs, monolith/micro topology, test infrastructure</li>
+      <li><strong>Organizational:</strong> team boundaries, approval chains, change-management</li>
+      <li><strong>Regulatory:</strong> data residency, audit retention, segregation of duties</li>
+      <li><strong>Cultural:</strong> appetite for change, sacred rituals, trust dynamics</li>
+    </ul>
+
+    <h2>The Diagnostic Deliverable</h2>
+    <p>End of Day 5 — typically 25–40 pages:</p>
+    <ol>
+      <li>Executive summary (3 pages)</li>
+      <li>SDLC flow map (annotated)</li>
+      <li>Repetitive-work audit findings</li>
+      <li>Top 10 automation opportunities (leverage × tractability)</li>
+      <li>Constraints inventory</li>
+      <li>Toolchain assessment</li>
+      <li>Adoption risk assessment</li>
+      <li>Quick-win candidates for the build phase</li>
+      <li>Long-horizon opportunities</li>
+      <li>Recommended Phase 2 focus</li>
+    </ol>
+    <p>Valuable to the client whether or not they proceed to Phase 2.</p>
+
+    <h2>Anti-Patterns We Avoid</h2>
+    <ul>
+      <li>Discovery as theater (confirming preconceptions)</li>
+      <li>Tool-first thinking (starting with "where does AI fit?")</li>
+      <li>Boil-the-ocean scope (focus is the deliverable)</li>
+      <li>Senior-engineer-only view (talk to QA, DevOps, security, product)</li>
+      <li>Assuming maturity (discover, don't assume)</li>
+    </ul>
+
+  </article>
+
+  <div class="doc-footer-nav">
+    <a href="demo.html" class="doc-footer-link">← Demo Script</a>
+    <a href="pitches.html" class="doc-footer-link doc-footer-link-primary">Next: Sales Positioning →</a>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-mark">⌬</span>
+        <span>SDLC<em>Orchestrator</em></span>
+      </div>
+      <div class="footer-tag">Stop writing code. Start orchestrating it.</div>
+      <div class="footer-meta">© 2026 · Strictly confidential</div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stop Writing Code. Start Orchestrating It. — Bespoke SDLC Orchestrator</title>
+  <meta name="description" content="A bespoke AI engineering team — built around your codebase — triggered through your AI coding CLI. A Lead Agent orchestrates specialized sub-agents. Your engineer becomes the conductor." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#top" class="brand">
+        <span class="brand-mark">⌬</span>
+        <span class="brand-name">SDLC<em>Orchestrator</em></span>
+      </a>
+      <div class="nav-links">
+        <a href="#demo">Live demo</a>
+        <a href="#impact">Impact</a>
+        <a href="#how">How it works</a>
+        <a href="library.html">Documents</a>
+        <a href="#contact" class="nav-cta">Book a workshop</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="top" class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">Bespoke AI Orchestration for Engineering Teams</div>
+      <h1 class="hero-title">
+        Stop writing code.<br />
+        <span class="accent">Start orchestrating it.</span>
+      </h1>
+      <p class="hero-tagline">
+        Convert your SDLC team into an <strong>AI-orchestrated engineering team</strong>.
+      </p>
+      <p class="hero-sub">
+        Your engineer opens their <strong>AI coding CLI</strong> and types one prompt — <code>start working on TICKET-X</code>.<br />
+        A <strong>Lead Agent</strong> — the tech lead of an AI team — picks it up, reads the ticket,<br />
+        asks clarifying questions on Jira, and waits. On <code>continue</code>, it orchestrates a team of<br />
+        specialized sub-agents through analysis, architecture, development, testing, security, and deployment.<br />
+        Humans approve every consequential moment. <strong>The engineer becomes the conductor.</strong>
+      </p>
+      <div class="hero-cta">
+        <a href="#demo" class="btn btn-primary">Watch the live demo ▶</a>
+        <a href="#bespoke" class="btn btn-ghost">Why it's bespoke →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-value">~5</div>
+          <div class="stat-label">short prompts<br />by the engineer</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">0</div>
+          <div class="stat-label">lines of code<br />typed by hand</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">~4h</div>
+          <div class="stat-label">ticket to<br />production</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">~30m</div>
+          <div class="stat-label">total human<br />attention</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO -->
+  <section id="demo" class="section demo-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Live Demo</div>
+        <h2 class="section-title">A Jira ticket. One AI Coding CLI. One Lead Agent.<br />The team delivers.</h2>
+        <p class="section-sub">
+          Watch ten steps unfold — including the moment QA finds bugs and the Lead Agent routes work back to the Developer sub-agent. This is what real orchestration looks like.
+        </p>
+      </div>
+
+      <!-- DEMO STAGE -->
+      <div class="stage">
+
+        <!-- LEFT: STAGE VISUAL -->
+        <div class="stage-visual">
+
+          <!-- AI CODING CLI -->
+          <div class="surface surface-cli" id="surface-cli">
+            <div class="surface-header">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+              <span class="surface-title">~/repos/yourorg · AI Coding CLI</span>
+              <span class="cli-status" id="cli-status">● connected to orchestrator</span>
+            </div>
+            <div class="surface-body cli-body" id="cli-body">
+
+              <!-- BLOCK 1 — Step 1: engineer triggers -->
+              <div class="cli-block" data-block="1">
+                <div class="cli-line cli-cmd"><span class="cli-prompt-symbol">$</span> start working on PROJ-1842</div>
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · Reading ticket PROJ-1842 — <em>invoice CSV export</em></div>
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · Loading codebase context: <code>services/billing</code></div>
+              </div>
+
+              <!-- BLOCK 2 — Step 2: questions, pause -->
+              <div class="cli-block" data-block="2">
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · Reviewing similar past tickets <span class="cli-dim">(12 found)</span></div>
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · 3 items unclear — posted as comments on Jira PROJ-1842</div>
+                <div class="cli-line cli-lead cli-emph"><span class="lead-tag">Lead Agent</span> · Pausing. Re-trigger me with <code>continue</code> when ready.</div>
+              </div>
+
+              <!-- BLOCK 3 — Step 3: continue + BA -->
+              <div class="cli-block" data-block="3">
+                <div class="cli-line cli-cmd"><span class="cli-prompt-symbol">$</span> continue on PROJ-1842</div>
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · Acknowledged. Engaging the team.</div>
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · → Business Analysis sub-agent</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> User stories drafted <span class="cli-dim">(3 stories · 8 acceptance criteria · 4 edge cases)</span></div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Approved by <code>@product-owner</code></div>
+              </div>
+
+              <!-- BLOCK 4 — Step 4: Architecture + Developer -->
+              <div class="cli-block" data-block="4">
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · → Architecture sub-agent</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Impact: 3 services, 1 frontend module</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Plan: streaming + background-job branching per ADR-0142</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Approved by <code>@tech-lead</code></div>
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · → Developer sub-agent</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Branch: <code>feature/PROJ-1842-invoice-export</code></div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> 14 files modified, 4 added · 6 commits</div>
+              </div>
+
+              <!-- BLOCK 5 — Step 5: QA FAILS -->
+              <div class="cli-block" data-block="5">
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · → QA sub-agent</div>
+                <div class="cli-line cli-error"><span class="err">✗</span> 2 tests failing:</div>
+                <div class="cli-line cli-error-detail">    · test_export_date_range_max — 60mo boundary off-by-one</div>
+                <div class="cli-line cli-error-detail">    · test_audit_event_emission — event not emitted on background path</div>
+                <div class="cli-line cli-lead cli-emph"><span class="lead-tag">Lead Agent</span> · Routing back to Developer sub-agent with QA findings.</div>
+              </div>
+
+              <!-- BLOCK 6 — Step 6: Dev fixes, QA re-validates -->
+              <div class="cli-block" data-block="6">
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · → Developer <span class="cli-dim">(revising)</span></div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Patched <code>export.go:84</code> (boundary check)</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Patched <code>export.go:142</code> (audit emit in background path)</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Committed</div>
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · → QA <span class="cli-dim">(re-validating)</span></div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> 47/47 tests passing · Coverage on new code: 91%</div>
+              </div>
+
+              <!-- BLOCK 7 — Step 7: Sec + Doc + ask + raise -->
+              <div class="cli-block" data-block="7">
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · → Security sub-agent</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> SAST clean · ✓ Secrets clean · ✓ Multi-tenant isolation verified</div>
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · → Documentation sub-agent</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Help center entry · ✓ Release notes drafted · ✓ OpenAPI annotations valid</div>
+                <div class="cli-line cli-lead cli-emph"><span class="lead-tag">Lead Agent</span> · Implementation complete on PROJ-1842.</div>
+                <div class="cli-line cli-sub">  ✔ 47 tests · 91% coverage · ✔ security clean · ✔ docs ready</div>
+                <div class="cli-line cli-lead cli-prompt-ask"><span class="lead-tag">Lead Agent</span> · Should I raise the PR? <span class="cli-prompt-y">[y/N]</span></div>
+                <div class="cli-line cli-cmd"><span class="cli-prompt-symbol">$</span> y</div>
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · → Developer (raising PR)</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> PR #4522 opened · Reviewers tagged: <code>@tech-lead, @backend-rotation</code></div>
+              </div>
+
+              <!-- BLOCK 8 — Step 8: tech lead reviewing -->
+              <div class="cli-block" data-block="8">
+                <div class="cli-line cli-note">[ <code>@tech-lead</code> invoked PR Reviewer Agent on PR #4522 — see GitHub ]</div>
+              </div>
+
+              <!-- BLOCK 9 — Step 9: resolve via CLI -->
+              <div class="cli-block" data-block="9">
+                <div class="cli-line cli-cmd"><span class="cli-prompt-symbol">$</span> resolve comments on PR #4522</div>
+                <div class="cli-line cli-info">Fetching open comments…</div>
+                <div class="cli-line cli-info">  Found 4 open comments <span class="cli-dim">(3 from PR Reviewer Agent · 1 from @tech-lead)</span></div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Comment 1: threshold → <code>BILLING_EXPORT_MAX_ROWS</code> config</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Comment 2: error wrapping uses <code>%w</code> consistently</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Comment 3: <code>MAX_DAYS</code> → <code>MAX_RANGE_MONTHS</code></div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Comment 4: rate-limit confirmed via existing job framework</div>
+                <div class="cli-line cli-info">Pushing 3 commits to <code>feature/PROJ-1842-invoice-export</code>…</div>
+                <div class="cli-line cli-success"><span class="ok">✓</span> Pushed. <code>@tech-lead</code> notified for re-review.</div>
+              </div>
+
+              <!-- BLOCK 10 — Step 10: deploy -->
+              <div class="cli-block" data-block="10">
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · → DevOps sub-agent</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Deploy checklist · ✓ Rollback plan · ✓ Env validation</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Awaiting <code>@release-manager</code> approval</div>
+                <div class="cli-line cli-lead"><span class="ok">✓</span> <code>@release-manager</code> approved deploy</div>
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · → Deploying to production…</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Deploy succeeded · No anomalies in first 30 min</div>
+                <div class="cli-line cli-lead"><span class="lead-tag">Lead Agent</span> · → Reporting sub-agent</div>
+                <div class="cli-line cli-sub"><span class="ok">✓</span> Jira → Done · ✓ Summary posted · ✓ Metrics registered</div>
+                <div class="cli-line cli-final"><span class="ok">✓</span> <strong>PROJ-1842 DELIVERED</strong></div>
+                <div class="cli-line cli-final-meta">  Total: 4h 12m · Human attention: ~30 min · <strong>Code typed: 0</strong></div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- AGENT HIERARCHY -->
+          <div class="hierarchy" id="hierarchy">
+            <div class="lead-node" id="node-lead">
+              <div class="node-pulse"></div>
+              <div class="node-label">LEAD AGENT</div>
+              <div class="node-sub">the tech lead of your AI team</div>
+            </div>
+            <div class="sub-agents">
+              <div class="sub-node" id="node-ba"><span>BA</span><em>Analysis</em></div>
+              <div class="sub-node" id="node-arc"><span>ARC</span><em>Architecture</em></div>
+              <div class="sub-node" id="node-dev"><span>DEV</span><em>Developer</em></div>
+              <div class="sub-node" id="node-qa"><span>QA</span><em>Testing</em></div>
+              <div class="sub-node" id="node-sec"><span>SEC</span><em>Security</em></div>
+              <div class="sub-node" id="node-doc"><span>DOC</span><em>Docs</em></div>
+              <div class="sub-node" id="node-ops"><span>OPS</span><em>DevOps</em></div>
+              <div class="sub-node" id="node-rpt"><span>RPT</span><em>Reporting</em></div>
+            </div>
+            <div class="external-agents">
+              <div class="ext-node" id="node-prr">
+                <span class="ext-badge">★</span>
+                <span class="ext-label">PR Reviewer Agent</span>
+                <span class="ext-sub">invoked by Tech Lead, on demand</span>
+              </div>
+              <div class="ext-node" id="node-cli">
+                <span class="ext-badge">★</span>
+                <span class="ext-label">AI Coding CLI</span>
+                <span class="ext-sub">the engineer's trigger surface · resolves PR comments</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- JIRA + GITHUB -->
+          <div class="surfaces-row">
+
+            <div class="surface surface-jira" id="surface-jira">
+              <div class="surface-header">
+                <span class="jira-badge">J</span>
+                <span class="surface-title">Jira · PROJ-1842</span>
+              </div>
+              <div class="surface-body">
+                <div class="jira-title">Customers should be able to bulk-export their invoice history as CSV</div>
+                <div class="jira-status" id="jira-status">Status: To Do</div>
+                <div class="jira-comments">
+                  <div class="jira-comment" data-msg="jira-lead-q">
+                    <div class="jc-author">Lead Agent <span class="jc-badge">AI</span></div>
+                    <div class="jc-body">Before I orchestrate work, three things need clarification:<br/>1. Date range — hard limit or default?<br/>2. Refunds &amp; credit notes — included?<br/>3. Audit logging required for bulk exports?</div>
+                  </div>
+                  <div class="jira-comment" data-msg="jira-pm-a">
+                    <div class="jc-author">@product-manager</div>
+                    <div class="jc-body">(1) Default 24mo, allow up to 60mo. (2) Include credit notes, not refunds. (3) Yes — audit per pattern.</div>
+                  </div>
+                  <div class="jira-comment" data-msg="jira-ba">
+                    <div class="jc-author">Lead Agent <span class="jc-badge">AI</span></div>
+                    <div class="jc-body">✓ BA complete · stories &amp; acceptance criteria attached · approved by <code>@product-owner</code></div>
+                  </div>
+                  <div class="jira-comment" data-msg="jira-arc">
+                    <div class="jc-author">Lead Agent <span class="jc-badge">AI</span></div>
+                    <div class="jc-body">✓ Architecture plan approved by <code>@tech-lead</code> · implementation underway</div>
+                  </div>
+                  <div class="jira-comment" data-msg="jira-bug">
+                    <div class="jc-author">Lead Agent <span class="jc-badge">AI</span></div>
+                    <div class="jc-body">QA found 2 issues — routing back to Developer Agent. Will update when re-validated.</div>
+                  </div>
+                  <div class="jira-comment" data-msg="jira-done">
+                    <div class="jc-author">Lead Agent <span class="jc-badge">AI</span></div>
+                    <div class="jc-body">✓ Implementation complete · all green · PR raised on engineer's approval</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="surface surface-github" id="surface-github">
+              <div class="surface-header">
+                <span class="gh-badge">●</span>
+                <span class="surface-title">GitHub · PR #4522</span>
+              </div>
+              <div class="surface-body">
+                <div class="gh-title">feat(billing): CSV export of invoice history [PROJ-1842]</div>
+                <div class="gh-meta">+428 −12 · 14 files</div>
+                <div class="gh-comments">
+                  <div class="gh-comment" data-msg="gh-prr">
+                    <div class="gc-author">PR Reviewer Agent <span class="gc-badge">AI</span></div>
+                    <div class="gc-body">3 actionable items:<br/>• <code>export.go:84</code> — hardcoded threshold → config<br/>• <code>export.go:127</code> — use <code>%w</code> for error wrapping<br/>• <code>Modal.tsx:42</code> — rename <code>MAX_DAYS</code> → <code>MAX_RANGE_MONTHS</code></div>
+                  </div>
+                  <div class="gh-comment" data-msg="gh-tl">
+                    <div class="gc-author">@tech-lead</div>
+                    <div class="gc-body">Confirm rate-limit on streaming path is handled by job framework.</div>
+                  </div>
+                  <div class="gh-comment" data-msg="gh-pushed">
+                    <div class="gc-author">@engineer <span class="gc-badge">resolved via CLI</span></div>
+                    <div class="gc-body">All 4 comments addressed. Pushed 3 commits.</div>
+                  </div>
+                  <div class="gh-comment" data-msg="gh-approved">
+                    <div class="gc-author">@tech-lead</div>
+                    <div class="gc-body">✅ Approved. Ready to merge.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- DEPLOY BANNER -->
+          <div class="deploy-banner" id="deploy-banner">
+            <span class="db-icon">🚀</span>
+            <div>
+              <div class="db-title">PROJ-1842 DEPLOYED TO PRODUCTION</div>
+              <div class="db-sub">4 hours · 5 prompts · 0 lines of code typed by the engineer</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: STEP CONTROLLER -->
+        <aside class="stage-control">
+          <div class="step-indicator">
+            <span id="step-num">01</span>
+            <span class="step-total">/ 10</span>
+          </div>
+          <h3 class="step-title" id="step-title">Engineer triggers the orchestrator</h3>
+          <p class="step-desc" id="step-desc">In their terminal, the engineer opens their AI Coding CLI and types one prompt: <code>start working on PROJ-1842</code>. That's the entire invocation. The orchestrator runs in the same CLI surface they already use for coding — no new tool to learn.</p>
+          <div class="step-meta">
+            <div class="meta-row"><span class="meta-k">Engineer typed:</span><span class="meta-v" id="meta-typed">start working on PROJ-1842</span></div>
+            <div class="meta-row"><span class="meta-k">Active:</span><span class="meta-v" id="meta-agent">Lead Agent (reading ticket)</span></div>
+            <div class="meta-row"><span class="meta-k">Approvals:</span><span class="meta-v" id="meta-approval">none yet</span></div>
+          </div>
+          <div class="step-controls">
+            <button class="ctrl-btn" id="btn-prev">← Prev</button>
+            <button class="ctrl-btn ctrl-primary" id="btn-next">Next →</button>
+            <button class="ctrl-btn" id="btn-play">⏸ Pause</button>
+            <button class="ctrl-btn" id="btn-reset">↺ Reset</button>
+          </div>
+          <div class="step-dots" id="step-dots">
+            <span class="dot-step active" data-step="1"></span>
+            <span class="dot-step" data-step="2"></span>
+            <span class="dot-step" data-step="3"></span>
+            <span class="dot-step" data-step="4"></span>
+            <span class="dot-step" data-step="5"></span>
+            <span class="dot-step" data-step="6"></span>
+            <span class="dot-step" data-step="7"></span>
+            <span class="dot-step" data-step="8"></span>
+            <span class="dot-step" data-step="9"></span>
+            <span class="dot-step" data-step="10"></span>
+          </div>
+          <div class="step-hint">Auto-playing. Press <kbd>Space</kbd> to pause · <kbd>←</kbd>/<kbd>→</kbd> to navigate · <kbd>R</kbd> to reset.</div>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT -->
+  <section id="impact" class="section impact-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">The Impact</div>
+        <h2 class="section-title">What this does to your team.</h2>
+        <p class="section-sub">
+          You're not just adopting AI tools. You're <strong>converting your SDLC team into an AI-orchestrated engineering team</strong> — where your engineers lead the work, and an entire AI team executes alongside them.
+        </p>
+      </div>
+
+      <div class="impact-grid">
+
+        <div class="impact-card">
+          <div class="impact-tag">Engineer Leverage</div>
+          <div class="impact-stat">3–5<span class="impact-stat-unit">×</span></div>
+          <div class="impact-label">throughput per engineer on orchestrated workflows</div>
+          <ul class="impact-list">
+            <li>Same team handles materially more execution capacity</li>
+            <li>Senior engineers focus on judgment, not boilerplate</li>
+            <li>Operational drag absorbed by AI sub-agents</li>
+          </ul>
+        </div>
+
+        <div class="impact-card">
+          <div class="impact-tag">Velocity → Revenue</div>
+          <div class="impact-stat">Sprints<span class="impact-stat-unit"> → Hours</span></div>
+          <div class="impact-label">ticket-to-production on automated paths</div>
+          <ul class="impact-list">
+            <li>Earlier feature delivery captures revenue sooner</li>
+            <li>More iterations per quarter — faster product-market learning</li>
+            <li>Roadmap commitments compress into shorter cycles</li>
+          </ul>
+        </div>
+
+        <div class="impact-card">
+          <div class="impact-tag">Quality Compounds</div>
+          <div class="impact-stat">~90<span class="impact-stat-unit">%</span></div>
+          <div class="impact-label">standardized test coverage on automated work</div>
+          <ul class="impact-list">
+            <li>Security &amp; compliance gates built in, not bolted on</li>
+            <li>Documentation always current</li>
+            <li>Audit trail by default — every action logged</li>
+          </ul>
+        </div>
+
+        <div class="impact-card">
+          <div class="impact-tag">Strategic Edge</div>
+          <div class="impact-stat">Compounding</div>
+          <div class="impact-label">advantage over competitors who don't adapt</div>
+          <ul class="impact-list">
+            <li>Smaller teams compete with larger ones</li>
+            <li>Engineering capital efficiency improves materially</li>
+            <li>Talent retention — engineers do less of the work they hate</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- SALES / URGENCY -->
+      <div class="impact-pitch">
+        <div class="pitch-heading">Why your team needs this — now.</div>
+        <div class="pitch-points">
+          <div class="pitch-point">
+            <div class="pitch-num">01</div>
+            <div class="pitch-body"><strong>Engineering payroll is your largest variable cost.</strong> Output per dollar of payroll is the metric that matters. AI-orchestrated teams shift that ratio materially in your favor.</div>
+          </div>
+          <div class="pitch-point">
+            <div class="pitch-num">02</div>
+            <div class="pitch-body"><strong>Feature velocity is revenue velocity.</strong> Every sprint your team compresses is revenue you capture earlier. Multiply that across a roadmap and the delta is significant.</div>
+          </div>
+          <div class="pitch-point">
+            <div class="pitch-num">03</div>
+            <div class="pitch-body"><strong>The window to lead is open.</strong> Companies that operationalize this in 2026 will have a structural lead by 2027. Tactical AI usage doesn't get you there — operational orchestration does.</div>
+          </div>
+          <div class="pitch-point">
+            <div class="pitch-num">04</div>
+            <div class="pitch-body"><strong>This is a bet on your existing team.</strong> You don't hire AI engineers. You convert the engineers you already have into orchestrators of AI engineering teams. Same talent, transformed leverage.</div>
+          </div>
+        </div>
+
+        <div class="pitch-quote">
+          "If your team's throughput doubles without doubling payroll,<br/>
+          <span class="pitch-quote-emph">that delta is your competitive moat.</span>"
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BESPOKE / CUSTOM-BUILD -->
+  <section id="bespoke" class="section bespoke-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Bespoke</div>
+        <h2 class="section-title">Custom-built around your codebase.<br />Not boxed. Not generic.</h2>
+        <p class="section-sub">
+          Off-the-shelf AI agents don't know your conventions, your ADRs, your tools, or your codebase. They produce generic output you spend hours fixing.
+          We build your orchestrator from week one — tailored to your project, your team, and your stack. That bespoke build <em>is</em> the value we deliver.
+        </p>
+      </div>
+
+      <div class="bespoke-grid">
+        <div class="bespoke-card">
+          <div class="bespoke-num">01</div>
+          <h3>Parallel to your codebase</h3>
+          <p>The orchestrator lives alongside your repos with full read context — symbol-aware retrieval, ADRs, past PRs, runbooks. Every sub-agent has your codebase as memory.</p>
+        </div>
+        <div class="bespoke-card">
+          <div class="bespoke-num">02</div>
+          <h3>Your tools, your MCPs</h3>
+          <p>We integrate with the tools your team actually uses — Jira or Linear, GitHub or GitLab, your CI, your Slack/Teams, your security stack, your secret store. Custom MCP servers built for your internal systems.</p>
+        </div>
+        <div class="bespoke-card">
+          <div class="bespoke-num">03</div>
+          <h3>Your conventions baked in</h3>
+          <p>Sub-agents learn your coding style, your testing patterns, your security policies, your deployment rituals. The output looks like your team wrote it — because it was tailored to your team.</p>
+        </div>
+        <div class="bespoke-card">
+          <div class="bespoke-num">04</div>
+          <h3>A team-lead model, customized</h3>
+          <p>The Lead Agent's clarifying questions, approval gates, and escalation rules are tuned to how <em>your</em> tech leads operate. Not a one-size-fits-all flow.</p>
+        </div>
+      </div>
+
+      <div class="bespoke-callout">
+        <div class="callout-quote">
+          "Otherwise you could just chain AI agents yourself.<br/>
+          <span class="callout-emph">The bespoke build is the value.</span>"
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="section how-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">How it works</div>
+        <h2 class="section-title">A tech lead. A team. One ticket.</h2>
+        <p class="section-sub">
+          The architecture is hierarchical — exactly like a real engineering team. The Lead Agent is the tech lead: it reads the ticket, asks questions, plans, delegates to specialists, handles rework, and surfaces approvals. Sub-agents are the team members. Humans approve.
+        </p>
+      </div>
+
+      <div class="how-diagram">
+        <div class="how-row how-row-engineer">
+          <div class="how-actor how-engineer">
+            <div class="actor-glyph">E</div>
+            <div class="actor-label">Engineer</div>
+            <div class="actor-action">in AI Coding CLI: <code>start working on TICKET-X</code></div>
+          </div>
+        </div>
+
+        <div class="how-arrow">↓</div>
+
+        <div class="how-row">
+          <div class="how-lead">
+            <div class="lead-glyph">⌬</div>
+            <div class="lead-title">LEAD AGENT</div>
+            <div class="lead-tagline">the tech lead of your AI team</div>
+            <div class="lead-roles">
+              <span>Reads the ticket</span><span>Asks the right questions</span><span>Plans the work</span>
+              <span>Delegates to specialists</span><span>Handles rework loops</span><span>Synthesizes outputs</span>
+              <span>Asks "raise PR?"</span><span>Escalates judgment calls</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="how-arrow">↓ delegates &amp; coordinates</div>
+
+        <div class="how-row how-row-subs">
+          <div class="how-sub"><span>BA</span><em>User stories</em></div>
+          <div class="how-sub"><span>Architecture</span><em>Codebase plan</em></div>
+          <div class="how-sub"><span>Developer</span><em>Code on branch</em></div>
+          <div class="how-sub"><span>QA</span><em>Tests &amp; coverage</em></div>
+          <div class="how-sub"><span>Security</span><em>SAST &amp; scans</em></div>
+          <div class="how-sub"><span>Docs</span><em>Help &amp; release notes</em></div>
+          <div class="how-sub"><span>DevOps</span><em>Deploy &amp; rollback</em></div>
+          <div class="how-sub"><span>Reporting</span><em>Updates &amp; metrics</em></div>
+        </div>
+
+        <div class="how-separator">─── invoked separately by humans ───</div>
+
+        <div class="how-row how-row-helpers">
+          <div class="how-helper">
+            <div class="helper-title">PR Reviewer Agent</div>
+            <div class="helper-trigger">Tech Lead types: <code>@pr-reviewer review PR #X</code></div>
+            <div class="helper-desc">Posts inline comments and a structured summary with confidence indicators. Augments — does not replace — the human reviewer.</div>
+          </div>
+          <div class="how-helper">
+            <div class="helper-title">AI Coding CLI</div>
+            <div class="helper-trigger">Engineer in terminal: <code>resolve comments on &lt;PR link&gt;</code></div>
+            <div class="helper-desc">The same CLI that triggered the work resolves PR comments — fetches them, applies fixes, replies inline, pushes. Engineer directs and verifies.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="principles">
+        <div class="principle">
+          <div class="p-num">01</div>
+          <div class="p-title">Engineer-triggered, never autonomous</div>
+          <div class="p-desc">The orchestrator runs only when the engineer says so. One prompt in their AI Coding CLI. No webhooks. No auto-start.</div>
+        </div>
+        <div class="principle">
+          <div class="p-num">02</div>
+          <div class="p-title">Questions before work</div>
+          <div class="p-desc">The Lead Agent's first instinct is to ask, not assume. Clarifying questions go to Jira. It waits.</div>
+        </div>
+        <div class="principle">
+          <div class="p-num">03</div>
+          <div class="p-title">Real orchestration includes rework</div>
+          <div class="p-desc">When QA finds bugs, the Lead Agent routes back to the Developer — like a real tech lead. Loops until clean.</div>
+        </div>
+        <div class="principle">
+          <div class="p-num">04</div>
+          <div class="p-title">Asks before raising PRs</div>
+          <div class="p-desc">The most consequential action requires the engineer's explicit yes. Humans approve every gate.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEFORE / AFTER -->
+  <section class="section compare-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">The Shift</div>
+        <h2 class="section-title">Same team. New role. New leverage.</h2>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-col compare-before">
+          <div class="compare-tag">Before</div>
+          <ul>
+            <li><strong>Engineer's role</strong>Producer — writes code</li>
+            <li><strong>Engineer types</strong>Code · prompts · status updates</li>
+            <li><strong>Cycle time</strong>2–3 sprints typical</li>
+            <li><strong>Edge cases</strong>What the engineer remembered</li>
+            <li><strong>When QA finds bugs</strong>Engineer context-switches, fixes manually</li>
+            <li><strong>PR drafted by</strong>Engineer typing</li>
+            <li><strong>PR comments resolved by</strong>Engineer typing</li>
+            <li><strong>Status visibility</strong>On request</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-after">
+          <div class="compare-tag compare-tag-after">With Orchestrator</div>
+          <ul>
+            <li><strong>Engineer's role</strong>Orchestrator — manages an AI team</li>
+            <li><strong>Engineer types</strong>~5 short prompts in their AI Coding CLI</li>
+            <li><strong>Cycle time</strong>Same day</li>
+            <li><strong>Edge cases</strong>Lead Agent enumerates upfront</li>
+            <li><strong>When QA finds bugs</strong>Lead Agent routes back to Developer — auto-loop</li>
+            <li><strong>PR drafted by</strong>Sub-agent — only on engineer's "yes"</li>
+            <li><strong>PR comments resolved by</strong>AI Coding CLI — engineer-directed</li>
+            <li><strong>Status visibility</strong>Live, always</li>
+          </ul>
+        </div>
+      </div>
+      <div class="compare-tagline">
+        Stop writing code. Start orchestrating it.
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASES -->
+  <section id="phases" class="section phases-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Engagement</div>
+        <h2 class="section-title">Five phases. Six weeks to live.<br />Then continuous.</h2>
+        <p class="section-sub">We don't start a build without a diagnostic. Every implementation is bespoke to your SDLC. You own everything we deliver.</p>
+      </div>
+      <div class="phases-grid">
+        <div class="phase-card">
+          <div class="phase-num">Phase 1</div>
+          <div class="phase-title">Discovery &amp; Assessment</div>
+          <div class="phase-week">Week 1</div>
+          <p>We embed with your team, map your SDLC, identify high-leverage workflows, audit your toolchain, and document constraints.</p>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">Phase 2</div>
+          <div class="phase-title">Strategy &amp; Roadmap</div>
+          <div class="phase-week">Week 2</div>
+          <p>We translate findings into a prioritized roadmap. You see exactly what we propose to build and why.</p>
+        </div>
+        <div class="phase-card phase-card-highlight">
+          <div class="phase-num">Phase 3</div>
+          <div class="phase-title">Custom Build</div>
+          <div class="phase-week">Weeks 3–5</div>
+          <p>We build your bespoke orchestrator — Lead Agent, sub-agents, MCP integrations, codebase context — live in your environment.</p>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">Phase 4</div>
+          <div class="phase-title">Training &amp; Adoption</div>
+          <div class="phase-week">Week 6</div>
+          <p>Role-based enablement. Champions identified. Operational ownership transferred to your team.</p>
+        </div>
+        <div class="phase-card phase-card-ongoing">
+          <div class="phase-num">Phase 5</div>
+          <div class="phase-title">Optimization &amp; Expansion</div>
+          <div class="phase-week">Continuous</div>
+          <p>We monitor, tune, expand to new workflows, add custom orchestrators (incident response, migrations, domain-specific).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section id="why" class="section why-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Why us</div>
+        <h2 class="section-title">Strategists who build. Not vendors who sell.</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon">◆</div>
+          <h3>Discovery first, always</h3>
+          <p>We refuse to build without diagnosis. Phase 1 is non-negotiable and valuable on its own.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">◆</div>
+          <h3>Bespoke, not boxed</h3>
+          <p>Every implementation is tailored to your codebase, conventions, tools, and culture.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">◆</div>
+          <h3>You own everything</h3>
+          <p>Code, configurations, agents, integrations — all in your environment, under your accounts.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">◆</div>
+          <h3>Model &amp; tool agnostic</h3>
+          <p>Best fit for each workload. Pluggable models. No vendor lock-in.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">◆</div>
+          <h3>Outcomes measured</h3>
+          <p>Baselines taken. Deltas reviewed. We are accountable to the data, not the narrative.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">◆</div>
+          <h3>Honest scope</h3>
+          <p>Phase 1 fixed-price. Phases 2–4 sized after diagnosis. We don't quote blind. We don't oversell.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT / CTA -->
+  <section id="contact" class="section cta-section">
+    <div class="container">
+      <div class="cta-card">
+        <h2 class="cta-title">Want your engineers to stop writing code and start orchestrating it?</h2>
+        <p class="cta-sub">Start with a half-day diagnostic workshop. Fixed scope. Fixed price. Valuable whether or not you continue.</p>
+        <div class="cta-actions">
+          <a href="mailto:hello@example.com?subject=SDLC%20Orchestrator%20-%20Diagnostic%20Workshop" class="btn btn-primary btn-lg">Book the workshop →</a>
+          <a href="#demo" class="btn btn-ghost btn-lg">Watch the demo again</a>
+        </div>
+        <div class="cta-foot">Bespoke AI Orchestration · Built for your codebase, your tools, your team</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-mark">⌬</span>
+        <span>SDLC<em>Orchestrator</em></span>
+      </div>
+      <div class="footer-tag">Stop writing code. Start orchestrating it.</div>
+      <div class="footer-meta">© 2026 · Strictly confidential</div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
