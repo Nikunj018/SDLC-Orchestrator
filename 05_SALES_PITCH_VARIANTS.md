@@ -58,7 +58,7 @@ Pair with the live website demo at `website/index.html`.
 
 ### 7. Close (1 min)
 
-> Next step is a half-day diagnostic workshop. Fixed scope, fixed price. Valuable even if you don't proceed. What's the right next step on your side?
+> Next step is a demo call. Easiest way to set it up is to connect on LinkedIn — [linkedin.com/in/harshpatel4905](https://www.linkedin.com/in/harshpatel4905/) — send a quick message about your team and stack, and we'll schedule it. After the demo, we'll provide a phase-by-phase estimate for the bespoke build.
 
 ---
 
@@ -78,7 +78,7 @@ Pair with the live website demo at `website/index.html`.
 >
 > Custom-built around your codebase, your tools, your conventions. That bespoke build is the value — otherwise you could chain agents yourself. Six weeks for the foundational orchestrator. Owned by you. No autonomous-shipping promises. No headcount-cut promises.
 >
-> Next step is a half-day diagnostic workshop. Worth your time even if you don't proceed.
+> Next step — connect on LinkedIn ([linkedin.com/in/harshpatel4905](https://www.linkedin.com/in/harshpatel4905/)), send a quick message, and we'll set up a demo. After the demo we provide a phase-by-phase estimate for your bespoke build.
 
 ---
 

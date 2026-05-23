@@ -126,6 +126,17 @@ That bespoke build *is* the value. Otherwise you could chain agents yourself.
 | **Phase 4** | Training & adoption (week 6) |
 | **Phase 5** | Ongoing optimization & expansion |
 | **Owned by** | The client — code, configs, agents, integrations |
+| **Pricing** | Phase-by-phase estimate after demo. No blind quotes. |
+
+---
+
+## 🤝 First Contact
+
+All client outreach lands on the same first step: **LinkedIn connect → demo call → phase-by-phase estimate**.
+
+LinkedIn (Harsh Patel): **https://www.linkedin.com/in/harshpatel4905/**
+
+The website's CTAs and doc-page footers route prospects to LinkedIn. Sales team can also share direct URLs to specific documents (proposal, architecture, demo, etc.) for asynchronous review before the demo call.
 
 ---
 

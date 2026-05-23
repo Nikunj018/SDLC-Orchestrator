@@ -122,9 +122,9 @@ Monitor, tune, expand. Build client-specific orchestrators on top of the flagshi
 
 ## 9. Next Steps
 
-1. **60-minute executive briefing** — we walk through architecture, demo, and your context-specific questions.
-2. **Half-day Diagnostic Workshop** — fixed scope, fixed price, valuable even if you do not proceed.
-3. **Statement of Work** — sized after Phase 1, never blind.
+1. **Connect on LinkedIn** — send a message at [linkedin.com/in/harshpatel4905](https://www.linkedin.com/in/harshpatel4905/). Brief us on your team and stack.
+2. **Demo call** — we walk through the orchestrator, your context, and the engagement model.
+3. **Phase-by-phase estimate** — after the demo we provide a sized estimate for the bespoke build. Phase 1 fixed-price; Phases 2–4 estimated per scope; Phase 5 ongoing retainer.
 4. **Kickoff** — six weeks later, your team operates with a bespoke SDLC Orchestrator they own.
 
 ---
