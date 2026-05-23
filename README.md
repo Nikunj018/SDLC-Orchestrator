@@ -7,23 +7,39 @@
 
 ---
 
-## 🌐 Live Site
+## 🌐 Public vs Internal — Two Separate Surfaces
 
-Once GitHub Pages is enabled (instructions below), the site is at:
+The repo serves **two distinct audiences** at two URL paths:
 
-**https://nikunj018.github.io/SDLC-Orchestrator/**
+| Surface | URL | Audience | What it shows |
+|---------|-----|----------|---------------|
+| **Public website** | `/` | Clients, prospects | Marketing site, live demo, impact, how it works, engagement, CTA |
+| **Internal docs** | `/internal/library.html` | Sales team only | Full proposal, architecture, demo script, discovery framework, pitch scripts |
 
-Direct doc URLs (shareable with prospects):
+**The public site has NO links to the internal docs.** Internal docs are accessed only via the direct URL — which the sales team keeps private.
+
+---
+
+## 🔗 URLs (After GitHub Pages Enabled)
+
+### Public (share freely with clients)
+
+| URL | Page |
+|-----|------|
+| `https://nikunj018.github.io/SDLC-Orchestrator/` | **Main website** with live demo |
+
+### Internal (sales team only — do not share with clients)
 
 | URL | Document |
 |-----|----------|
-| `/` or `/index.html` | Marketing site with live demo |
-| `/library.html` | Document library (index of all docs) |
-| `/proposal.html` | Executive Proposal |
-| `/architecture.html` | Technical Architecture |
-| `/demo.html` | Demo Script (Jira → Deployment) |
-| `/discovery.html` | Phase 1 Discovery Framework |
-| `/pitches.html` | Sales Positioning & Objections |
+| `https://nikunj018.github.io/SDLC-Orchestrator/internal/library.html` | **Internal hub** — index of all docs |
+| `https://nikunj018.github.io/SDLC-Orchestrator/internal/proposal.html` | Executive Proposal |
+| `https://nikunj018.github.io/SDLC-Orchestrator/internal/architecture.html` | Technical Architecture |
+| `https://nikunj018.github.io/SDLC-Orchestrator/internal/demo.html` | Demo Script |
+| `https://nikunj018.github.io/SDLC-Orchestrator/internal/discovery.html` | Discovery Framework |
+| `https://nikunj018.github.io/SDLC-Orchestrator/internal/pitches.html` | Sales Positioning & Objections |
+
+> ⚠️ **Internal URLs are obscure but not password-protected.** Anyone with the URL can view them. Keep the `/internal/` path private — do not link from emails, social, or LinkedIn posts. Share only person-to-person within the sales team.
 
 ---
 
@@ -32,36 +48,35 @@ Direct doc URLs (shareable with prospects):
 ```
 /
 ├── README.md                          (this file)
-├── 01_EXECUTIVE_PROPOSAL.md           (source — markdown)
-├── 02_TECHNICAL_ARCHITECTURE.md       (source — markdown)
-├── 03_DEMO_JIRA_TO_DEPLOY.md          (source — markdown)
-├── 04_DISCOVERY_FRAMEWORK.md          (source — markdown)
-├── 05_SALES_PITCH_VARIANTS.md         (source — markdown)
+├── 01_EXECUTIVE_PROPOSAL.md           (markdown source)
+├── 02_TECHNICAL_ARCHITECTURE.md       (markdown source)
+├── 03_DEMO_JIRA_TO_DEPLOY.md          (markdown source)
+├── 04_DISCOVERY_FRAMEWORK.md          (markdown source)
+├── 05_SALES_PITCH_VARIANTS.md         (markdown source)
 └── docs/                              (GitHub Pages root)
-    ├── index.html                     (main marketing site + interactive demo)
-    ├── library.html                   (document library index)
-    ├── proposal.html                  (rendered HTML doc)
-    ├── architecture.html              (rendered HTML doc)
-    ├── demo.html                      (rendered HTML doc)
-    ├── discovery.html                 (rendered HTML doc)
-    ├── pitches.html                   (rendered HTML doc)
-    ├── styles.css                     (main styles)
-    ├── doc.css                        (doc-page prose styles)
-    ├── script.js                      (demo logic)
-    └── .nojekyll                      (disables Jekyll processing)
+    ├── index.html                     (PUBLIC main marketing site)
+    ├── styles.css
+    ├── doc.css
+    ├── script.js
+    ├── .nojekyll
+    └── internal/                      (INTERNAL — sales team only)
+        ├── library.html               (internal docs hub)
+        ├── proposal.html
+        ├── architecture.html
+        ├── demo.html
+        ├── discovery.html
+        └── pitches.html
 ```
 
 ---
 
-## 🚀 Enable GitHub Pages
+## 🚀 Enable GitHub Pages (one-time)
 
-After pushing, enable Pages from the repo settings:
-
-1. Go to **https://github.com/Nikunj018/SDLC-Orchestrator/settings/pages**
-2. Under **Source**, select **Deploy from a branch**
-3. Under **Branch**, select **main** and **/docs**
-4. Click **Save**
-5. Wait ~30 seconds. Site live at **https://nikunj018.github.io/SDLC-Orchestrator/**
+1. Open https://github.com/Nikunj018/SDLC-Orchestrator/settings/pages
+2. **Source:** Deploy from a branch
+3. **Branch:** `main` · **Folder:** `/docs`
+4. **Save**
+5. Wait ~30 sec. Live at `https://nikunj018.github.io/SDLC-Orchestrator/`
 
 ---
 
@@ -71,48 +86,34 @@ After pushing, enable Pages from the repo settings:
 Double-click docs/index.html
 ```
 
-No build. No server. Works in any modern browser.
-
-For a local server (better for clean URLs):
-
-```bash
-cd docs
-python -m http.server 8000
-# open http://localhost:8000
+For internal docs hub:
+```
+Double-click docs/internal/library.html
 ```
 
 ---
 
-## 📑 How to Share Internal Docs (Without Sending MD Files)
+## 📑 How to Share
 
-The HTML doc pages in `/docs/` are designed for sharing with clients without sending raw `.md` files.
+### With clients
+- Share the **public URL** only: `https://nikunj018.github.io/SDLC-Orchestrator/`
+- Drives them to: live demo → impact → how it works → engagement → LinkedIn connect for demo
 
-**Three ways to share:**
+### With sales team (internal)
+- Share the **internal library URL**: `https://nikunj018.github.io/SDLC-Orchestrator/internal/library.html`
+- Sales team uses this as their working reference
+- For asynchronous client review of a specific doc, individual URLs can be shared one-off:
+  - e.g., `.../internal/proposal.html` — but bear in mind these are technically reachable by anyone with the link
 
-1. **Direct URL** — after Pages is enabled, share `https://nikunj018.github.io/SDLC-Orchestrator/proposal.html` (or any other doc URL). Renders beautifully in any browser.
-2. **PDF export** — open the HTML doc in Chrome → Print → Save as PDF. The doc styles are print-aware and produce clean PDFs.
-3. **Local HTML** — send the `/docs/` folder as a zip. Recipient double-clicks `index.html` to open the site offline.
-
-The MD files at repo root remain the source of truth for editing — when changes are needed, edit the MD then update the corresponding HTML doc page.
+### As PDFs
+- Open any HTML doc in Chrome → Print → Save as PDF
+- Doc styles are print-aware → clean PDFs for email attachments
 
 ---
 
 ## 🎯 The Operating Model (One Paragraph)
 
-The engineer opens their AI Coding CLI in the terminal and types `start working on TICKET-X`. A **Lead Agent** — the tech lead of an AI team — reads the ticket, the codebase, and similar past work. It posts clarifying questions on Jira and **waits**. The orchestrator never starts work blindly. Engineer answers via PM, re-triggers with `continue`. Lead Agent delegates to sub-agents: BA (Product Owner approves), Architecture (Tech Lead approves), Developer. QA runs tests — and when it finds bugs, **the Lead Agent routes back to the Developer sub-agent** for fixes. QA re-validates. Security and Docs finalize. Lead Agent asks the engineer **"Raise the PR?"** — waits for explicit yes. PR opens. Tech Lead invokes the separate **PR Reviewer Agent** for AI-assisted review. Engineer resolves comments by typing `resolve comments on PR #X` in the same AI Coding CLI. DevOps sub-agent prepares deploy. Release Manager approves. Shipped. Engineer typed ~5 short prompts. Wrote zero lines of code.
-
----
-
-## 💼 Why Bespoke
-
-Off-the-shelf agents don't know your codebase, your ADRs, your conventions, or your tools. We build:
-
-- **Parallel to your codebase** with full read context
-- **Custom MCPs** for your internal systems
-- **Conventions baked in** — coding style, testing patterns, security policies, deployment rituals
-- **Lead Agent tuned** to how your tech leads actually operate
-
-That bespoke build *is* the value. Otherwise you could chain agents yourself.
+The engineer opens their AI Coding CLI and types `start working on TICKET-X`. A **Lead Agent** — the tech lead of an AI team — reads the ticket, the codebase, and similar past work. It posts clarifying questions on Jira and **waits**. The orchestrator never starts work blindly. Engineer answers via PM, re-triggers with `continue`. Lead Agent delegates to sub-agents: BA (PO approves), Architecture (TL approves), Developer. QA runs tests — and when it finds bugs, **the Lead Agent routes back to the Developer sub-agent** for fixes. QA re-validates. Security and Docs finalize. Lead Agent asks the engineer **"Raise the PR?"** — waits for explicit yes. PR opens. Tech Lead invokes the separate **PR Reviewer Agent** for AI-assisted review. Engineer resolves comments by typing `resolve comments on PR #X` in the same AI Coding CLI. DevOps prepares deploy. Release Manager approves. Shipped. Engineer typed ~5 short prompts. Wrote zero lines of code.
 
 ---
 
@@ -130,13 +131,11 @@ That bespoke build *is* the value. Otherwise you could chain agents yourself.
 
 ---
 
-## 🤝 First Contact
+## 🤝 First Contact (For Clients)
 
-All client outreach lands on the same first step: **LinkedIn connect → demo call → phase-by-phase estimate**.
+Public CTA flow: **LinkedIn connect → demo call → phase-by-phase estimate**.
 
 LinkedIn (Harsh Patel): **https://www.linkedin.com/in/harshpatel4905/**
-
-The website's CTAs and doc-page footers route prospects to LinkedIn. Sales team can also share direct URLs to specific documents (proposal, architecture, demo, etc.) for asynchronous review before the demo call.
 
 ---
 
