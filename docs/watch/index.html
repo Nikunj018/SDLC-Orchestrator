@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=1920, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SDLC Orchestrator — Demo Video</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -36,9 +36,17 @@ html, body {
   background: #000;
   color: var(--text);
   font-family: var(--sans);
-  overflow: hidden;
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+/* Wrapper holds scaled stage at correct scaled height so page can scroll */
+.wrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 /* Control bar — hidden during recording */
@@ -687,9 +695,10 @@ html, body {
 <div class="controls" id="controls">
   <button class="ctrl primary" id="btn-play">▶ Play (no recording)</button>
   <button class="ctrl rec" id="btn-record">Record &amp; Download .webm</button>
-  <button class="ctrl" id="btn-fit">Fit to screen</button>
+  <button class="ctrl" id="btn-fit">Toggle fit (width / screen)</button>
 </div>
 
+<div class="wrap" id="wrap">
 <div class="stage" id="stage">
 
   <!-- Cold open card -->
@@ -833,6 +842,7 @@ html, body {
     <div class="end-foot">sdlc-orchestrator · From Jira ticket to deployed code</div>
   </div>
 
+</div>
 </div>
 
 <script>
@@ -1176,20 +1186,33 @@ function stopAll() {
 }
 
 // ============================================================
-// FIT-TO-SCREEN — scale 1920x1080 stage to viewport
+// FIT — two modes:
+//   'width'  → fill width, page scrolls vertically if taller than viewport (default)
+//   'screen' → fit whole stage in viewport, no scroll, may shrink
 // ============================================================
-function fitStage() {
+let fitMode = 'width';
+function applyFit() {
   const stage = $('stage');
+  const wrap = $('wrap');
   const sx = window.innerWidth / 1920;
   const sy = window.innerHeight / 1080;
-  const s = Math.min(sx, sy);
+  const s = fitMode === 'width' ? sx : Math.min(sx, sy);
   stage.style.transform = `scale(${s})`;
+  stage.style.transformOrigin = 'top left';
+  // Reserve scaled height so wrapper occupies real layout space → page scrolls
+  wrap.style.height = `${1080 * s}px`;
+  wrap.style.width = `${1920 * s}px`;
+  wrap.style.margin = '0 auto';
   document.body.style.background = '#000';
-  stage.style.position = 'absolute';
-  stage.style.left = `${(window.innerWidth - 1920 * s) / 2}px`;
-  stage.style.top = `${(window.innerHeight - 1080 * s) / 2}px`;
 }
-window.addEventListener('resize', fitStage);
+function fitStage() {
+  fitMode = fitMode === 'width' ? 'screen' : 'width';
+  applyFit();
+}
+window.addEventListener('resize', applyFit);
+window.addEventListener('orientationchange', applyFit);
+window.addEventListener('load', applyFit);
+document.fonts && document.fonts.ready && document.fonts.ready.then(applyFit);
 
 // ============================================================
 // CONTROLS
@@ -1230,7 +1253,7 @@ $('btn-record').addEventListener('click', async () => {
 });
 
 // Init
-fitStage();
+applyFit();
 </script>
 
 </body>
