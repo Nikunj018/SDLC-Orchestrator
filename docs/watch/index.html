@@ -113,12 +113,12 @@ html, body {
 .head {
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 80px;
-  background: rgba(10, 14, 20, 0.6);
+  height: 64px;
+  background: rgba(10, 14, 20, 0.7);
   border-bottom: 1px solid var(--border-soft);
   display: flex;
   align-items: center;
-  padding: 0 56px;
+  padding: 0 48px;
   z-index: 10;
 }
 .brand {
@@ -151,38 +151,38 @@ html, body {
 /* Title banner — large fade-in/out between scenes */
 .title-banner {
   position: absolute;
-  top: 100px;
-  left: 56px;
-  right: 56px;
+  top: 76px;
+  left: 48px;
+  right: 48px;
   z-index: 9;
   pointer-events: none;
 }
 .scene-eyebrow {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   opacity: 0;
   transition: opacity 0.5s;
 }
 .scene-title {
-  font-size: 52px;
+  font-size: 38px;
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.05;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 0.6s, transform 0.6s;
 }
 .scene-subtitle {
-  font-size: 22px;
+  font-size: 17px;
   color: var(--text-muted);
   font-weight: 400;
   line-height: 1.4;
-  max-width: 1100px;
+  max-width: 1300px;
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 0.6s, transform 0.6s;
@@ -195,13 +195,13 @@ html, body {
 /* Main canvas — three columns */
 .canvas {
   position: absolute;
-  top: 280px;
-  left: 56px;
-  right: 56px;
-  bottom: 80px;
+  top: 220px;
+  left: 48px;
+  right: 48px;
+  bottom: 116px;
   display: grid;
-  grid-template-columns: 580px 1fr 580px;
-  gap: 28px;
+  grid-template-columns: 540px 1fr 540px;
+  gap: 24px;
 }
 
 /* Surface — generic card */
@@ -383,11 +383,11 @@ html, body {
   background: var(--bg-3);
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 28px 26px;
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 14px;
   height: 100%;
 }
 .hierarchy-title {
@@ -400,12 +400,12 @@ html, body {
 .lead-node {
   background: var(--bg-4);
   border: 2px solid var(--border);
-  padding: 18px 38px;
-  border-radius: 12px;
+  padding: 12px 32px;
+  border-radius: 10px;
   text-align: center;
   position: relative;
   transition: all 0.4s;
-  min-width: 280px;
+  min-width: 260px;
 }
 .lead-node.active {
   border-color: var(--accent);
@@ -430,21 +430,22 @@ html, body {
 
 .subs-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
   width: 100%;
 }
 .sub {
   background: var(--bg-4);
   border: 1px solid var(--border);
-  padding: 12px 14px;
-  border-radius: 8px;
+  padding: 9px 8px;
+  border-radius: 7px;
   transition: all 0.3s;
   position: relative;
-  font-size: 13px;
+  font-size: 12px;
+  text-align: center;
 }
-.sub-name { font-weight: 700; color: var(--text); display: block; }
-.sub-role { font-size: 11px; color: var(--text-dim); margin-top: 2px; display: block; }
+.sub-name { font-weight: 700; color: var(--text); display: block; font-size: 12px; }
+.sub-role { font-size: 9.5px; color: var(--text-dim); margin-top: 2px; display: block; letter-spacing: 0.02em; }
 .sub.active {
   background: rgba(74, 222, 128, 0.12);
   border-color: var(--accent);
@@ -479,56 +480,72 @@ html, body {
   justify-content: center;
 }
 
-.approvals {
-  width: 100%;
-  margin-top: auto;
-  border-top: 1px solid var(--border-soft);
-  padding-top: 16px;
+/* Approvals — horizontal strip at stage bottom */
+.bottom-strip {
+  position: absolute;
+  left: 48px;
+  right: 48px;
+  bottom: 24px;
+  height: 76px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  z-index: 5;
 }
 .approval-title {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-dim);
-  margin-bottom: 10px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border-soft);
+  padding-right: 14px;
+  line-height: 1.2;
 }
-.approval-list { display: flex; flex-direction: column; gap: 6px; }
+.approval-list { display: flex; gap: 10px; flex: 1; }
 .appr {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 7px 10px;
+  gap: 8px;
+  padding: 8px 12px;
   background: var(--bg-2);
-  border-radius: 6px;
-  font-size: 12.5px;
+  border-radius: 8px;
+  font-size: 11.5px;
   border: 1px solid var(--border-soft);
-  opacity: 0.5;
+  opacity: 0.45;
   transition: all 0.4s;
+  flex: 1;
+  min-width: 0;
 }
 .appr.done {
   opacity: 1;
-  border-color: rgba(74, 222, 128, 0.4);
-  background: rgba(74, 222, 128, 0.05);
+  border-color: rgba(74, 222, 128, 0.5);
+  background: rgba(74, 222, 128, 0.07);
 }
 .appr-icon {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: var(--bg-4);
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   color: var(--text-dim);
   flex-shrink: 0;
 }
 .appr.done .appr-icon { background: var(--accent); color: var(--bg); border-color: var(--accent); }
 .appr.done .appr-icon::before { content: '✓'; }
-.appr-who { font-weight: 600; color: var(--text); }
-.appr-what { color: var(--text-dim); font-size: 11.5px; margin-left: auto; }
+.appr-text { display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+.appr-who { font-weight: 700; color: var(--text); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.appr-what { color: var(--text-dim); font-size: 10.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* PR card (GitHub) */
 .pr-card {
@@ -561,7 +578,7 @@ html, body {
 /* Deploy banner */
 .deploy-banner {
   position: absolute;
-  bottom: 100px;
+  bottom: 130px;
   left: 50%;
   transform: translateX(-50%) translateY(40px);
   background: linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(34, 211, 238, 0.15));
@@ -688,6 +705,188 @@ html, body {
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
+
+/* ============================================================
+   JIRA DASHBOARD COLD-OPEN
+   Kanban board with ticket cards. Cursor picks PROJ-1842.
+   ============================================================ */
+.dashboard {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  z-index: 65;
+  display: flex;
+  flex-direction: column;
+  padding: 36px 56px 24px;
+  opacity: 1;
+  transition: opacity 0.7s;
+}
+.dashboard.hide { opacity: 0; pointer-events: none; }
+.dash-head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 22px;
+}
+.dash-jira-logo {
+  width: 48px;
+  height: 48px;
+  background: var(--jira);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 900;
+  color: white;
+}
+.dash-project-name { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+.dash-project-meta { font-size: 13px; color: var(--text-dim); margin-top: 2px; font-family: var(--mono); letter-spacing: 0.04em; }
+.dash-user {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.dash-user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--bg);
+}
+
+.dash-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  flex: 1;
+  min-height: 0;
+}
+.dash-col {
+  background: var(--bg-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+.dash-col-head {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dash-col-count {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  background: var(--bg-4);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+.dash-card {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 12px 14px;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.dash-card.target.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 40px rgba(74, 222, 128, 0.45), inset 0 0 0 1px var(--accent);
+  transform: scale(1.04);
+  background: rgba(74, 222, 128, 0.04);
+}
+.dash-card-key {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--jira);
+  font-weight: 700;
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+}
+.dash-card.target.active .dash-card-key { color: var(--accent); }
+.dash-card-title { font-size: 13px; color: var(--text); font-weight: 500; line-height: 1.4; }
+.dash-card-meta {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  font-size: 10.5px;
+  color: var(--text-dim);
+  align-items: center;
+}
+.dash-card-pri {
+  padding: 1px 7px;
+  border-radius: 3px;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+.dash-card-pri.high { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+.dash-card-pri.med  { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+.dash-card-pri.low  { background: rgba(74, 222, 128, 0.15); color: var(--accent); }
+.dash-card-done { opacity: 0.55; }
+
+.cursor-ptr {
+  position: absolute;
+  top: 0; left: 0;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+  z-index: 80;
+  transition: transform 1.6s cubic-bezier(0.34, 0.05, 0.34, 1), opacity 0.4s;
+  opacity: 0;
+}
+.cursor-ptr.show { opacity: 1; }
+.cursor-ptr svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
+}
+
+.dash-banner {
+  position: absolute;
+  bottom: 36px;
+  left: 56px;
+  right: 56px;
+  background: linear-gradient(90deg, rgba(74,222,128,0.14), rgba(34,211,238,0.08));
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s, transform 0.5s;
+  box-shadow: 0 0 40px rgba(74, 222, 128, 0.2);
+}
+.dash-banner.show { opacity: 1; transform: translateY(0); }
+.dash-banner-icon {
+  font-size: 24px;
+  color: var(--accent);
+  font-weight: 800;
+}
+.dash-banner-text { color: var(--text); font-size: 18px; font-weight: 500; }
+.dash-banner-text em { color: var(--accent); font-style: normal; font-weight: 700; }
+.dash-banner-text .mono { font-family: var(--mono); font-size: 16px; }
 </style>
 </head>
 <body>
@@ -710,6 +909,102 @@ html, body {
     <div class="cold-title">From <span class="em">Jira ticket</span> to <span class="em">deployed code</span>.<br/>Zero lines typed.</div>
     <div class="cold-sub">A real engineering team — orchestrated by AI agents. PM, BA, Architect, Developer, QA, Security, Docs, DevOps. The engineer directs. Humans approve every gate.</div>
     <div class="cold-tag">~4 hours · 5 short CLI prompts · 1 production deploy</div>
+  </div>
+
+  <!-- Jira dashboard scene (engineer's morning view) -->
+  <div class="dashboard hide" id="dashboard">
+    <div class="dash-head">
+      <div class="dash-jira-logo">J</div>
+      <div>
+        <div class="dash-project-name">Customer Platform</div>
+        <div class="dash-project-meta">Sprint 47 · 8 days remaining</div>
+      </div>
+      <div class="dash-user">
+        <span>Aarav Mehta · Senior Engineer</span>
+        <div class="dash-user-avatar">A</div>
+      </div>
+    </div>
+    <div class="dash-board">
+      <div class="dash-col">
+        <div class="dash-col-head">To Do <span class="dash-col-count">5</span></div>
+        <div class="dash-card target" id="dash-target">
+          <div class="dash-card-key">PROJ-1842</div>
+          <div class="dash-card-title">Customers can bulk-export invoice history as CSV</div>
+          <div class="dash-card-meta"><span class="dash-card-pri high">P1</span><span>3 SP</span><span>· Finance</span></div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-key">PROJ-1843</div>
+          <div class="dash-card-title">Stripe webhook for chargebacks &amp; disputes</div>
+          <div class="dash-card-meta"><span class="dash-card-pri med">P2</span><span>5 SP</span></div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-key">PROJ-1844</div>
+          <div class="dash-card-title">Admin: filter audit log by tenant</div>
+          <div class="dash-card-meta"><span class="dash-card-pri low">P3</span><span>2 SP</span></div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-key">PROJ-1846</div>
+          <div class="dash-card-title">Pagination on transactions listing</div>
+          <div class="dash-card-meta"><span class="dash-card-pri low">P3</span><span>2 SP</span></div>
+        </div>
+      </div>
+      <div class="dash-col">
+        <div class="dash-col-head">In Progress <span class="dash-col-count">3</span></div>
+        <div class="dash-card">
+          <div class="dash-card-key">PROJ-1838</div>
+          <div class="dash-card-title">Fix duplicate-login race on SSO callback</div>
+          <div class="dash-card-meta"><span class="dash-card-pri high">P1</span><span>3 SP</span></div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-key">PROJ-1835</div>
+          <div class="dash-card-title">Refactor auth middleware to use context</div>
+          <div class="dash-card-meta"><span class="dash-card-pri med">P2</span><span>8 SP</span></div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-key">PROJ-1833</div>
+          <div class="dash-card-title">Migrate billing service to new metrics API</div>
+          <div class="dash-card-meta"><span class="dash-card-pri med">P2</span><span>5 SP</span></div>
+        </div>
+      </div>
+      <div class="dash-col">
+        <div class="dash-col-head">In Review <span class="dash-col-count">2</span></div>
+        <div class="dash-card">
+          <div class="dash-card-key">PROJ-1830</div>
+          <div class="dash-card-title">SSO migration to OIDC provider</div>
+          <div class="dash-card-meta"><span class="dash-card-pri med">P2</span><span>13 SP</span></div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-key">PROJ-1828</div>
+          <div class="dash-card-title">CSV upload validation errors UX</div>
+          <div class="dash-card-meta"><span class="dash-card-pri low">P3</span><span>3 SP</span></div>
+        </div>
+      </div>
+      <div class="dash-col">
+        <div class="dash-col-head">Done <span class="dash-col-count">12</span></div>
+        <div class="dash-card dash-card-done">
+          <div class="dash-card-key">PROJ-1820</div>
+          <div class="dash-card-title">Weekly email digest delivery</div>
+          <div class="dash-card-meta"><span class="dash-card-pri low">P3</span><span>5 SP</span></div>
+        </div>
+        <div class="dash-card dash-card-done">
+          <div class="dash-card-key">PROJ-1819</div>
+          <div class="dash-card-title">Onboarding wizard step 4 bug</div>
+          <div class="dash-card-meta"><span class="dash-card-pri med">P2</span><span>2 SP</span></div>
+        </div>
+        <div class="dash-card dash-card-done">
+          <div class="dash-card-key">PROJ-1815</div>
+          <div class="dash-card-title">Dashboard widget — revenue MoM</div>
+          <div class="dash-card-meta"><span class="dash-card-pri low">P3</span><span>3 SP</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="dash-banner" id="dash-banner">
+      <div class="dash-banner-icon">▸</div>
+      <div class="dash-banner-text">Engineer picks <em>PROJ-1842</em> — opens AI Coding CLI &amp; types <span class="mono">start working on PROJ-1842</span></div>
+    </div>
+    <div class="cursor-ptr" id="cursor">
+      <svg viewBox="0 0 24 24"><path fill="#ffffff" stroke="#0a0e14" stroke-width="1.5" stroke-linejoin="round" d="M5 3 L5 19 L9 15 L11.5 21 L14 20 L11.5 14 L18 14 Z"/></svg>
+    </div>
   </div>
 
   <!-- Header -->
@@ -778,16 +1073,6 @@ html, body {
           <div class="sub" data-sub="devops"><span class="sub-name">DevOps</span><span class="sub-role">Deploy · Rollback</span></div>
           <div class="sub" data-sub="report"><span class="sub-name">Reporting</span><span class="sub-role">Metrics · Summary</span></div>
         </div>
-        <div class="approvals">
-          <div class="approval-title">Human Approvals</div>
-          <div class="approval-list">
-            <div class="appr" data-appr="pm"><span class="appr-icon"></span><span class="appr-who">Product Manager</span><span class="appr-what">clarified ticket</span></div>
-            <div class="appr" data-appr="po"><span class="appr-icon"></span><span class="appr-who">Product Owner</span><span class="appr-what">approved stories</span></div>
-            <div class="appr" data-appr="tl"><span class="appr-icon"></span><span class="appr-who">Tech Lead</span><span class="appr-what">approved architecture</span></div>
-            <div class="appr" data-appr="eng"><span class="appr-icon"></span><span class="appr-who">Engineer</span><span class="appr-what">authorised PR</span></div>
-            <div class="appr" data-appr="rm"><span class="appr-icon"></span><span class="appr-who">Release Manager</span><span class="appr-what">approved deploy</span></div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -817,6 +1102,18 @@ html, body {
       </div>
     </div>
 
+  </div>
+
+  <!-- Bottom strip: human approval gates -->
+  <div class="bottom-strip">
+    <div class="approval-title">Human<br/>Gates</div>
+    <div class="approval-list">
+      <div class="appr" data-appr="pm"><span class="appr-icon"></span><span class="appr-text"><span class="appr-who">PM</span><span class="appr-what">clarified ticket</span></span></div>
+      <div class="appr" data-appr="po"><span class="appr-icon"></span><span class="appr-text"><span class="appr-who">Product Owner</span><span class="appr-what">approved stories</span></span></div>
+      <div class="appr" data-appr="tl"><span class="appr-icon"></span><span class="appr-text"><span class="appr-who">Tech Lead</span><span class="appr-what">approved arch + code</span></span></div>
+      <div class="appr" data-appr="eng"><span class="appr-icon"></span><span class="appr-text"><span class="appr-who">Engineer</span><span class="appr-what">authorised PR</span></span></div>
+      <div class="appr" data-appr="rm"><span class="appr-icon"></span><span class="appr-text"><span class="appr-who">Release Manager</span><span class="appr-what">approved deploy</span></span></div>
+    </div>
   </div>
 
   <!-- Deploy banner -->
@@ -852,12 +1149,20 @@ html, body {
 // ============================================================
 
 const SCRIPT = [
-  // --- Cold open ---
-  { t: 0,    fn: 'cold',     args: { show: true } },
-  { t: 4.5,  fn: 'cold',     args: { show: false } },
+  // --- Cold open: brand reveal → Jira dashboard → engineer picks PROJ-1842 ---
+  { t: 0,    fn: 'cold',        args: { show: true } },
+  { t: 1.5,  fn: 'dashboard',   args: { show: true } },
+  { t: 1.55, fn: 'cursorAt',    args: { pos: { x: 960, y: 540 }, instant: true } },
+  { t: 1.7,  fn: 'cold',        args: { show: false } },
+  { t: 2.0,  fn: 'cursorShow',  args: { show: true } },
+  { t: 2.4,  fn: 'cursorAt',    args: { target: 'dash-target' } },
+  { t: 4.1,  fn: 'dashHighlight', args: {} },
+  { t: 4.4,  fn: 'dashBanner',  args: { show: true } },
+  { t: 5.4,  fn: 'cursorShow',  args: { show: false } },
+  { t: 5.5,  fn: 'dashboard',   args: { show: false } },
 
-  // ============= SCENE 1: Jira ticket exists. Engineer triggers. =============
-  { t: 5,    fn: 'scene',    args: { n: 1, eye: 'SCENE 01 · TRIGGER', title: 'Engineer triggers the orchestrator.', sub: 'One prompt in the AI Coding CLI. No new tool. No agent runs without a human starting it.' } },
+  // ============= SCENE 1: Jira ticket on board. Engineer triggers. =============
+  { t: 6,    fn: 'scene',    args: { n: 1, eye: 'SCENE 01 · TRIGGER', title: 'Engineer triggers the orchestrator.', sub: 'One prompt in the AI Coding CLI. No new tool. No agent runs without a human starting it.' } },
   { t: 6,    fn: 'highlight', args: { id: 'surf-jira' } },
   { t: 7,    fn: 'jiraStatus', args: { s: 'todo', txt: 'To Do' } },
   { t: 8,    fn: 'highlight', args: { id: null } },
@@ -1009,6 +1314,43 @@ function ACTIONS() {
     cold({ show }) {
       $('cold').classList.toggle('hide', !show);
     },
+    dashboard({ show }) {
+      $('dashboard').classList.toggle('hide', !show);
+    },
+    dashHighlight() {
+      $('dash-target').classList.add('active');
+    },
+    dashBanner({ show }) {
+      $('dash-banner').classList.toggle('show', show);
+    },
+    cursorShow({ show }) {
+      $('cursor').classList.toggle('show', show);
+    },
+    cursorAt({ target, pos, instant }) {
+      const cursor = $('cursor');
+      let x = 0, y = 0;
+      if (target) {
+        const el = document.getElementById(target);
+        const stage = $('stage');
+        if (!el || !stage) return;
+        const stageRect = stage.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+        const scale = (stageRect.width / 1920) || 1;
+        x = (elRect.left + 40 - stageRect.left) / scale;
+        y = (elRect.top + 18 - stageRect.top) / scale;
+      } else if (pos) {
+        x = pos.x; y = pos.y;
+      }
+      if (instant) {
+        cursor.style.transition = 'none';
+        cursor.style.transform = `translate(${x}px, ${y}px)`;
+        // force reflow so next transition takes effect
+        void cursor.offsetHeight;
+        cursor.style.transition = '';
+      } else {
+        cursor.style.transform = `translate(${x}px, ${y}px)`;
+      }
+    },
     scene({ n, eye, title, sub }) {
       $('step-n').textContent = n;
       const b = $('banner');
@@ -1155,6 +1497,11 @@ function reset() {
   $('end').classList.remove('show');
   $('banner').classList.remove('show');
   $('cold').classList.remove('hide');
+  $('dashboard').classList.add('hide');
+  $('dash-target').classList.remove('active');
+  $('dash-banner').classList.remove('show');
+  $('cursor').classList.remove('show');
+  $('cursor').style.transform = 'translate(960px, 540px)';
   $('step-n').textContent = '1';
   $('timer').textContent = '00:00';
 }
