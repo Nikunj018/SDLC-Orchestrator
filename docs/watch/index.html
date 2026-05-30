@@ -391,12 +391,65 @@ html, body {
   height: 100%;
 }
 .hierarchy-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--text-dim);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
+
+/* "Currently processing" pill — viewer always knows WHAT is happening RIGHT NOW */
+.action-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.5);
+  color: var(--accent-2);
+  padding: 8px 18px;
+  border-radius: 22px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.3s, transform 0.3s, background 0.3s, border-color 0.3s, color 0.3s;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.action-pill.show { opacity: 1; transform: translateY(0); }
+.action-pill.warn {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.55);
+  color: var(--warning);
+}
+.action-pill.err {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.55);
+  color: var(--danger);
+}
+.action-pill.ok {
+  background: rgba(74, 222, 128, 0.08);
+  border-color: rgba(74, 222, 128, 0.55);
+  color: var(--accent);
+}
+.action-pill .pulse-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse-action 1.2s infinite;
+  flex-shrink: 0;
+}
+@keyframes pulse-action {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+.action-pill .arrow { color: currentColor; font-weight: 900; opacity: 0.7; margin: 0 2px; }
 .lead-node {
   background: var(--bg-4);
   border: 2px solid var(--border);
@@ -575,28 +628,38 @@ html, body {
 }
 .pr-status.merged { background: rgba(167, 139, 250, 0.12); color: var(--accent-3); border-color: var(--accent-3); }
 
-/* Deploy banner */
+/* Deploy banner — solid card so text stays legible against busy background */
 .deploy-banner {
   position: absolute;
   bottom: 130px;
   left: 50%;
   transform: translateX(-50%) translateY(40px);
-  background: linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(34, 211, 238, 0.15));
+  background: #0d2a1c;
   border: 2px solid var(--accent);
   border-radius: 14px;
-  padding: 24px 48px;
-  box-shadow: 0 0 60px rgba(74, 222, 128, 0.4);
+  padding: 22px 44px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 60px rgba(74, 222, 128, 0.35), inset 0 0 0 1px rgba(74, 222, 128, 0.15);
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 22px;
   opacity: 0;
   transition: opacity 0.6s, transform 0.6s;
   z-index: 20;
 }
 .deploy-banner.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.deploy-icon { font-size: 44px; }
-.deploy-text strong { display: block; font-size: 24px; font-weight: 800; letter-spacing: 0.04em; color: var(--accent); }
-.deploy-text span { font-size: 15px; color: var(--text-muted); }
+.deploy-icon {
+  font-size: 40px;
+  width: 64px;
+  height: 64px;
+  background: rgba(74, 222, 128, 0.15);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.deploy-text strong { display: block; font-size: 22px; font-weight: 800; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 4px; }
+.deploy-text span { font-size: 14px; color: #d5e4d8; font-family: var(--mono); letter-spacing: 0.02em; }
 
 /* End card */
 .end-card {
@@ -1058,7 +1121,11 @@ html, body {
       </div>
 
       <div class="hierarchy" style="flex: 1;">
-        <div class="hierarchy-title">Agent Team</div>
+        <div class="hierarchy-title">Agent Team · Live</div>
+        <div class="action-pill" id="action-pill">
+          <span class="pulse-dot"></span>
+          <span id="action-text">Awaiting trigger</span>
+        </div>
         <div class="lead-node" id="lead">
           <div class="lead-label">LEAD AGENT</div>
           <div class="lead-sub">tech lead of the AI team</div>
@@ -1154,141 +1221,172 @@ const SCRIPT = [
   { t: 1.5,  fn: 'dashboard',   args: { show: true } },
   { t: 1.55, fn: 'cursorAt',    args: { pos: { x: 960, y: 540 }, instant: true } },
   { t: 1.7,  fn: 'cold',        args: { show: false } },
+  { t: 1.9,  fn: 'action',      args: { text: 'Engineer · reviewing Jira board' } },
   { t: 2.0,  fn: 'cursorShow',  args: { show: true } },
   { t: 2.4,  fn: 'cursorAt',    args: { target: 'dash-target' } },
   { t: 4.1,  fn: 'dashHighlight', args: {} },
+  { t: 4.3,  fn: 'action',      args: { text: 'Engineer · picked <strong>PROJ-1842</strong>', tone: 'ok' } },
   { t: 4.4,  fn: 'dashBanner',  args: { show: true } },
   { t: 5.4,  fn: 'cursorShow',  args: { show: false } },
   { t: 5.5,  fn: 'dashboard',   args: { show: false } },
 
-  // ============= SCENE 1: Jira ticket on board. Engineer triggers. =============
+  // ============= SCENE 1: TRIGGER (6-16s) =============
   { t: 6,    fn: 'scene',    args: { n: 1, eye: 'SCENE 01 · TRIGGER', title: 'Engineer triggers the orchestrator.', sub: 'One prompt in the AI Coding CLI. No new tool. No agent runs without a human starting it.' } },
   { t: 6,    fn: 'highlight', args: { id: 'surf-jira' } },
+  { t: 6.5,  fn: 'action',   args: { text: '◀ Reading Jira ticket PROJ-1842' } },
   { t: 7,    fn: 'jiraStatus', args: { s: 'todo', txt: 'To Do' } },
   { t: 8,    fn: 'highlight', args: { id: null } },
-  { t: 9,    fn: 'cliType',  args: { cmd: 'start working on PROJ-1842' } },
-  { t: 11.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> Reading PROJ-1842 + similar past tickets (12) + codebase context...</div>' } },
-  { t: 13,   fn: 'leadActive', args: { on: true } },
+  { t: 9.5,  fn: 'cliType',  args: { cmd: 'start working on PROJ-1842' } },
+  { t: 12,   fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> Reading PROJ-1842 + similar past tickets (12) + codebase context...</div>' } },
+  { t: 12.5, fn: 'action',   args: { text: 'Lead Agent · analysing ticket + codebase + 12 past tickets' } },
+  { t: 14,   fn: 'leadActive', args: { on: true } },
 
-  // ============= SCENE 2: Lead asks questions, pauses =============
-  { t: 15,   fn: 'scene',    args: { n: 2, eye: 'SCENE 02 · CLARIFY', title: 'Lead Agent asks questions — and pauses.', sub: 'Like a real tech lead. It does not assume. Three things unclear. Comment posted on Jira. Work paused.' } },
-  { t: 17,   fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> 3 clarifications needed. Posted on Jira. <em>Pausing.</em></div>' } },
-  { t: 18,   fn: 'highlight', args: { id: 'surf-jira' } },
-  { t: 19,   fn: 'jiraStatus', args: { s: 'refine', txt: 'In Refinement · Paused' } },
-  { t: 19.5, fn: 'jiraCmt',  args: {
+  // ============= SCENE 2: CLARIFY (16-26s, +1) =============
+  { t: 16,   fn: 'scene',    args: { n: 2, eye: 'SCENE 02 · CLARIFY', title: 'Lead Agent asks questions — and pauses.', sub: 'Like a real tech lead. It does not assume. Three things unclear. Comment posted on Jira. Work paused.' } },
+  { t: 16.5, fn: 'action',   args: { text: 'Lead Agent · 3 unclear requirements found', tone: 'warn' } },
+  { t: 18.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> 3 clarifications needed. Posted on Jira. <em>Pausing.</em></div>' } },
+  { t: 19.5, fn: 'highlight', args: { id: 'surf-jira' } },
+  { t: 20.5, fn: 'jiraStatus', args: { s: 'refine', txt: 'In Refinement · Paused' } },
+  { t: 21,   fn: 'jiraCmt',  args: {
     cls: 'lead', who: 'Lead Agent', pill: 'AGENT', pillCls: '', time: '10:14',
     body: '<strong>Before I orchestrate work, 3 clarifications:</strong><br/>1. Date range — hard limit or default?<br/>2. Refunds + credit notes — included?<br/>3. Audit logging required for bulk exports?<br/><br/><em>Pausing. Re-trigger with <code>continue</code> when ready.</em>' } },
-  { t: 22,   fn: 'highlight', args: { id: null } },
+  { t: 23,   fn: 'action',   args: { text: '◼ Paused → awaiting PM response', tone: 'warn' } },
+  { t: 24,   fn: 'highlight', args: { id: null } },
 
-  // ============= SCENE 3: PM answers. Engineer continues. BA writes stories. =============
-  { t: 24,   fn: 'scene',    args: { n: 3, eye: 'SCENE 03 · RESUME', title: 'PM answers. Engineer types continue. BA writes stories.', sub: 'PM clarifies between meetings. Engineer reviews, types one word. Lead Agent delegates to BA sub-agent. Product Owner approves.' } },
-  { t: 26,   fn: 'jiraCmt',  args: {
+  // ============= SCENE 3: RESUME + BA (26-43s, +2) =============
+  { t: 26,   fn: 'scene',    args: { n: 3, eye: 'SCENE 03 · RESUME', title: 'PM answers. Engineer types continue. BA writes stories.', sub: 'PM clarifies between meetings. Engineer reviews, types one word. Lead Agent delegates to BA sub-agent. Product Owner approves.' } },
+  { t: 26.5, fn: 'action',   args: { text: 'PM · clarifying ticket in Jira', tone: 'warn' } },
+  { t: 28,   fn: 'jiraCmt',  args: {
     cls: 'human', who: 'Priya · PM', pill: 'HUMAN', pillCls: 'human', time: '10:31',
     body: '1. Default 24 months, hard cap 60. 2. Yes, include both. 3. Yes — audit required (SOC2 control AC-4).' } },
-  { t: 28.5, fn: 'cliType',  args: { cmd: 'continue on PROJ-1842' } },
-  { t: 30,   fn: 'apprDone', args: { id: 'pm' } },
-  { t: 30.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> Resuming. Delegating to <code>BA sub-agent</code> → drafting stories.</div>' } },
-  { t: 31,   fn: 'subActive', args: { id: 'ba', state: 'active' } },
-  { t: 32.5, fn: 'jiraStatus', args: { s: 'progress', txt: 'In Progress' } },
-  { t: 33,   fn: 'jiraCmt',  args: {
+  { t: 30.5, fn: 'cliType',  args: { cmd: 'continue on PROJ-1842' } },
+  { t: 32,   fn: 'apprDone', args: { id: 'pm' } },
+  { t: 32.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> Resuming. Delegating to <code>BA sub-agent</code> → drafting stories.</div>' } },
+  { t: 33,   fn: 'subActive', args: { id: 'ba', state: 'active' } },
+  { t: 33.3, fn: 'action',   args: { text: 'Lead → BA Sub-agent · drafting stories' } },
+  { t: 34.5, fn: 'jiraStatus', args: { s: 'progress', txt: 'In Progress' } },
+  { t: 35,   fn: 'jiraCmt',  args: {
     cls: 'bot', who: 'BA Sub-agent', pill: 'AGENT', pillCls: 'bot', time: '10:34',
     body: '<strong>Stories drafted (3) · acceptance criteria · edge cases.</strong> Tagged @PO for approval.' } },
-  { t: 35,   fn: 'slackCmt', args: {
+  { t: 37,   fn: 'slackCmt', args: {
     cls: 'human', who: 'Aman · Product Owner', pill: 'HUMAN', pillCls: 'human', time: '10:38',
     body: '✓ Stories look right. Approved. /sdlc approve-stories PROJ-1842' } },
-  { t: 37,   fn: 'apprDone', args: { id: 'po' } },
-  { t: 38,   fn: 'subDone',  args: { id: 'ba' } },
+  { t: 39,   fn: 'apprDone', args: { id: 'po' } },
+  { t: 39.3, fn: 'action',   args: { text: 'Product Owner · approved stories ✓', tone: 'ok' } },
+  { t: 40,   fn: 'subDone',  args: { id: 'ba' } },
 
-  // ============= SCENE 4: Architecture planned. Developer codes. =============
-  { t: 40,   fn: 'scene',    args: { n: 4, eye: 'SCENE 04 · DESIGN + BUILD', title: 'Architecture planned. Developer codes.', sub: 'Architect sub-agent follows ADR-0142 (background jobs). Tech Lead approves. Developer sub-agent picks up — 14 files modified, 4 added, 6 commits.' } },
-  { t: 42,   fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> → <code>Architect sub-agent</code> · loading codebase + ADRs...</div>' } },
-  { t: 43,   fn: 'subActive', args: { id: 'arc', state: 'active' } },
-  { t: 45,   fn: 'cliAdd',   args: { html: '<div class="cli-sub">• Impact: 3 services · 1 frontend module</div><div class="cli-sub">• Pattern: follows team ADR-0142 (background jobs)</div><div class="cli-sub">• Plan posted to Jira. Awaiting Tech Lead.</div>' } },
-  { t: 47,   fn: 'slackCmt', args: {
+  // ============= SCENE 4: DESIGN + BUILD (43-58s, +3) =============
+  { t: 43,   fn: 'scene',    args: { n: 4, eye: 'SCENE 04 · DESIGN + BUILD', title: 'Architecture planned. Developer codes.', sub: 'Architect sub-agent follows ADR-0142 (background jobs). Tech Lead approves. Developer sub-agent picks up — 14 files modified, 4 added, 6 commits.' } },
+  { t: 43.5, fn: 'action',   args: { text: 'Lead → Architect Sub-agent · designing system' } },
+  { t: 45,   fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> → <code>Architect sub-agent</code> · loading codebase + ADRs...</div>' } },
+  { t: 46,   fn: 'subActive', args: { id: 'arc', state: 'active' } },
+  { t: 48,   fn: 'cliAdd',   args: { html: '<div class="cli-sub">• Impact: 3 services · 1 frontend module</div><div class="cli-sub">• Pattern: follows team ADR-0142 (background jobs)</div><div class="cli-sub">• Plan posted to Jira. Awaiting Tech Lead.</div>' } },
+  { t: 50,   fn: 'slackCmt', args: {
     cls: 'human', who: 'Vikram · Tech Lead', pill: 'HUMAN', pillCls: 'human', time: '10:52',
     body: '✓ Architecture LGTM. /sdlc approve-arch PROJ-1842' } },
-  { t: 48.5, fn: 'apprDone', args: { id: 'tl' } },
-  { t: 49,   fn: 'subDone',  args: { id: 'arc' } },
-  { t: 49.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> → <code>Developer sub-agent</code> · branch <code>feature/PROJ-1842-invoice-export</code></div>' } },
-  { t: 50,   fn: 'subActive', args: { id: 'dev', state: 'active' } },
-  { t: 51,   fn: 'cliAdd',   args: { html: '<div class="cli-sub">• 14 files modified · 4 added</div><div class="cli-sub">• 6 commits pushed to remote</div>' } },
+  { t: 51.5, fn: 'apprDone', args: { id: 'tl' } },
+  { t: 51.8, fn: 'action',   args: { text: 'Tech Lead · approved architecture ✓', tone: 'ok' } },
+  { t: 52,   fn: 'subDone',  args: { id: 'arc' } },
+  { t: 52.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> → <code>Developer sub-agent</code> · branch <code>feature/PROJ-1842-invoice-export</code></div>' } },
+  { t: 53,   fn: 'subActive', args: { id: 'dev', state: 'active' } },
+  { t: 53.3, fn: 'action',   args: { text: 'Lead → Developer Sub-agent · writing code' } },
+  { t: 54,   fn: 'cliAdd',   args: { html: '<div class="cli-sub">• 14 files modified · 4 added</div><div class="cli-sub">• 6 commits pushed to remote</div>' } },
 
-  // ============= SCENE 5: QA finds bugs. Routes back. =============
-  { t: 54,   fn: 'scene',    args: { n: 5, eye: 'SCENE 05 · QA LOOP', title: 'QA finds bugs. Lead routes back to Developer.', sub: 'Real orchestration. Two test failures. The Lead Agent doesn\'t paper over QA findings. It routes back — exactly as a real tech lead would.' } },
-  { t: 56,   fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> → <code>QA sub-agent</code> · running test suite...</div>' } },
-  { t: 57,   fn: 'subDone',  args: { id: 'dev' } },
-  { t: 57.5, fn: 'subActive', args: { id: 'qa', state: 'active' } },
-  { t: 59,   fn: 'cliAdd',   args: { html: '<div class="cli-line cli-err">✗ 2 tests failing:</div><div class="cli-sub" style="color: #fca5a5;">· test_export_date_range_max — 60mo boundary off-by-one</div><div class="cli-sub" style="color: #fca5a5;">· test_audit_event_emission — event not emitted on background path</div>' } },
-  { t: 60.5, fn: 'subActive', args: { id: 'qa', state: 'error' } },
-  { t: 61.5, fn: 'cliAdd',   args: { html: '<div class="cli-note">Lead Agent · Routing back to Developer sub-agent with QA findings.</div>' } },
+  // ============= SCENE 5: QA LOOP (58-69s, +4) =============
+  { t: 58,   fn: 'scene',    args: { n: 5, eye: 'SCENE 05 · QA LOOP', title: 'QA finds bugs. Lead routes back to Developer.', sub: 'Real orchestration. Two test failures. The Lead Agent doesn\'t paper over QA findings. It routes back — exactly as a real tech lead would.' } },
+  { t: 58.5, fn: 'action',   args: { text: 'Lead → QA Sub-agent · running test suite' } },
+  { t: 60,   fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> → <code>QA sub-agent</code> · running test suite...</div>' } },
+  { t: 61,   fn: 'subDone',  args: { id: 'dev' } },
+  { t: 61.5, fn: 'subActive', args: { id: 'qa', state: 'active' } },
+  { t: 63,   fn: 'cliAdd',   args: { html: '<div class="cli-line cli-err">✗ 2 tests failing:</div><div class="cli-sub" style="color: #fca5a5;">· test_export_date_range_max — 60mo boundary off-by-one</div><div class="cli-sub" style="color: #fca5a5;">· test_audit_event_emission — event not emitted on background path</div>' } },
+  { t: 63.5, fn: 'action',   args: { text: '✗ QA · 2 tests FAILING', tone: 'err' } },
+  { t: 64.5, fn: 'subActive', args: { id: 'qa', state: 'error' } },
+  { t: 66,   fn: 'cliAdd',   args: { html: '<div class="cli-note">Lead Agent · Routing back to Developer sub-agent with QA findings.</div>' } },
+  { t: 66.5, fn: 'action',   args: { text: '↻ Lead Agent · routing back to Developer', tone: 'warn' } },
 
-  // ============= SCENE 6: Dev fixes. QA re-validates. Green. =============
-  { t: 64,   fn: 'scene',    args: { n: 6, eye: 'SCENE 06 · FIX + RE-VALIDATE', title: 'Developer patches. QA re-runs. All green.', sub: 'Two precise fixes — boundary check and audit emission. 47/47 tests pass. Coverage on new code: 91%. This is the back-and-forth that makes it real.' } },
-  { t: 66,   fn: 'subActive', args: { id: 'dev', state: 'active' } },
-  { t: 67,   fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Developer</span> patching <code>export.go:84</code> (boundary) + <code>export.go:142</code> (audit emit).</div>' } },
-  { t: 69,   fn: 'subDone',  args: { id: 'dev' } },
-  { t: 69.5, fn: 'subActive', args: { id: 'qa', state: 'active' } },
-  { t: 70.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead cli-ok">✓ 47/47 tests passing · coverage 91%</div>' } },
-  { t: 72,   fn: 'subDone',  args: { id: 'qa' } },
+  // ============= SCENE 6: FIX + RE-VALIDATE (69-80s, +5) =============
+  { t: 69,   fn: 'scene',    args: { n: 6, eye: 'SCENE 06 · FIX + RE-VALIDATE', title: 'Developer patches. QA re-runs. All green.', sub: 'Two precise fixes — boundary check and audit emission. 47/47 tests pass. Coverage on new code: 91%. This is the back-and-forth that makes it real.' } },
+  { t: 69.5, fn: 'action',   args: { text: 'Developer · patching export.go (boundary + audit)' } },
+  { t: 71,   fn: 'subActive', args: { id: 'dev', state: 'active' } },
+  { t: 72,   fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Developer</span> patching <code>export.go:84</code> (boundary) + <code>export.go:142</code> (audit emit).</div>' } },
+  { t: 74,   fn: 'subDone',  args: { id: 'dev' } },
+  { t: 74.5, fn: 'subActive', args: { id: 'qa', state: 'active' } },
+  { t: 75,   fn: 'action',   args: { text: 'QA · re-validating' } },
+  { t: 75.8, fn: 'cliAdd',   args: { html: '<div class="cli-lead cli-ok">✓ 47/47 tests passing · coverage 91%</div>' } },
+  { t: 76.3, fn: 'action',   args: { text: '✓ QA · 47/47 passing · coverage 91%', tone: 'ok' } },
+  { t: 77,   fn: 'subDone',  args: { id: 'qa' } },
 
-  // ============= SCENE 7: Security + Docs. Raise PR? =============
-  { t: 74,   fn: 'scene',    args: { n: 7, eye: 'SCENE 07 · GATE', title: 'Security + Docs done. "Raise the PR?"', sub: 'SAST clean. Secrets clean. Multi-tenant isolation verified. Release notes drafted. Lead Agent asks the engineer before raising the PR — never unprompted.' } },
-  { t: 76,   fn: 'subActive', args: { id: 'sec', state: 'active' } },
-  { t: 77,   fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Security</span> SAST clean · secrets clean · tenant isolation verified.</div>' } },
-  { t: 78,   fn: 'subDone',  args: { id: 'sec' } },
-  { t: 78.5, fn: 'subActive', args: { id: 'docs', state: 'active' } },
-  { t: 79.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Docs</span> help-center updated · release notes drafted · OpenAPI validated.</div>' } },
-  { t: 80.5, fn: 'subDone',  args: { id: 'docs' } },
-  { t: 81.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead cli-info">Lead Agent · Should I raise the PR? [y/N]</div>' } },
-  { t: 83,   fn: 'cliType',  args: { cmd: 'y' } },
-  { t: 84.5, fn: 'apprDone', args: { id: 'eng' } },
-  { t: 85,   fn: 'cliAdd',   args: { html: '<div class="cli-lead cli-ok">✓ PR #4522 opened · reviewers tagged · awaiting review.</div>' } },
-  { t: 85.5, fn: 'jiraStatus', args: { s: 'review', txt: 'In Review' } },
-  { t: 86,   fn: 'showPR',   args: {} },
+  // ============= SCENE 7: GATE (80-96s, +6) =============
+  { t: 80,   fn: 'scene',    args: { n: 7, eye: 'SCENE 07 · GATE', title: 'Security + Docs done. "Raise the PR?"', sub: 'SAST clean. Secrets clean. Multi-tenant isolation verified. Release notes drafted. Lead Agent asks the engineer before raising the PR — never unprompted.' } },
+  { t: 80.5, fn: 'action',   args: { text: 'Lead → Security Sub-agent · scanning' } },
+  { t: 82,   fn: 'subActive', args: { id: 'sec', state: 'active' } },
+  { t: 83,   fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Security</span> SAST clean · secrets clean · tenant isolation verified.</div>' } },
+  { t: 84,   fn: 'subDone',  args: { id: 'sec' } },
+  { t: 84.3, fn: 'action',   args: { text: 'Lead → Docs Sub-agent · drafting release notes' } },
+  { t: 84.5, fn: 'subActive', args: { id: 'docs', state: 'active' } },
+  { t: 85.8, fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Docs</span> help-center updated · release notes drafted · OpenAPI validated.</div>' } },
+  { t: 87,   fn: 'subDone',  args: { id: 'docs' } },
+  { t: 87.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead cli-info">Lead Agent · Should I raise the PR? [y/N]</div>' } },
+  { t: 88,   fn: 'action',   args: { text: '? Awaiting engineer · raise the PR?', tone: 'warn' } },
+  { t: 89.5, fn: 'cliType',  args: { cmd: 'y' } },
+  { t: 91,   fn: 'apprDone', args: { id: 'eng' } },
+  { t: 91.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead cli-ok">✓ PR #4522 opened · reviewers tagged · awaiting review.</div>' } },
+  { t: 92,   fn: 'jiraStatus', args: { s: 'review', txt: 'In Review' } },
+  { t: 92.5, fn: 'showPR',   args: {} },
+  { t: 93,   fn: 'action',   args: { text: '✓ PR #4522 opened on GitHub', tone: 'ok' } },
 
-  // ============= SCENE 8: Tech Lead invokes PR Reviewer Agent =============
-  { t: 89,   fn: 'scene',    args: { n: 8, eye: 'SCENE 08 · ON-DEMAND REVIEW', title: 'Tech Lead invokes PR Reviewer Agent.', sub: 'Not auto-triggered. The Tech Lead pulls it in from Slack. 3 actionable items · 2 needing human judgment. AI assists; humans decide.' } },
-  { t: 91,   fn: 'slackCmt', args: {
+  // ============= SCENE 8: ON-DEMAND REVIEW (96-106s, +7) =============
+  { t: 96,   fn: 'scene',    args: { n: 8, eye: 'SCENE 08 · ON-DEMAND REVIEW', title: 'Tech Lead invokes PR Reviewer Agent.', sub: 'Not auto-triggered. The Tech Lead pulls it in from Slack. 3 actionable items · 2 needing human judgment. AI assists; humans decide.' } },
+  { t: 96.5, fn: 'action',   args: { text: 'Tech Lead · invoking PR Reviewer Agent (on-demand)' } },
+  { t: 98,   fn: 'slackCmt', args: {
     cls: 'human', who: 'Vikram · Tech Lead', pill: 'HUMAN', pillCls: 'human', time: '13:02',
     body: '@pr-reviewer review PR #4522' } },
-  { t: 93,   fn: 'addPRReview', args: {} },
-  { t: 95,   fn: 'slackCmt', args: {
+  { t: 100,  fn: 'addPRReview', args: {} },
+  { t: 100.5, fn: 'action',  args: { text: 'PR Reviewer · 3 actionable + 2 judgment items' } },
+  { t: 102.5, fn: 'slackCmt', args: {
     cls: 'human', who: 'Vikram · Tech Lead', pill: 'HUMAN', pillCls: 'human', time: '13:08',
     body: 'Added my notes on rate-limit copy. Engineer — please action the 4 inline comments.' } },
 
-  // ============= SCENE 9: Engineer resolves via CLI =============
-  { t: 98,   fn: 'scene',    args: { n: 9, eye: 'SCENE 09 · RESOLVE', title: 'Engineer resolves comments — via the same CLI.', sub: 'No manual fixes typed. Same CLI, one prompt. Fetches 4 comments · applies fixes · replies inline · pushes 3 commits.' } },
-  { t: 100,  fn: 'cliType',  args: { cmd: 'resolve comments on PR #4522' } },
-  { t: 102,  fn: 'cliAdd',   args: { html: '<div class="cli-sub">• Fetched 4 open comments</div><div class="cli-sub">• Applied 4 fixes</div><div class="cli-sub">• Replied inline to each</div><div class="cli-sub">• Pushed 3 commits to PR branch</div>' } },
-  { t: 104,  fn: 'updatePR', args: {} },
-  { t: 105.5, fn: 'slackCmt', args: {
+  // ============= SCENE 9: RESOLVE (106-119s, +8) =============
+  { t: 106,  fn: 'scene',    args: { n: 9, eye: 'SCENE 09 · RESOLVE', title: 'Engineer resolves comments — via the same CLI.', sub: 'No manual fixes typed. Same CLI, one prompt. Fetches 4 comments · applies fixes · replies inline · pushes 3 commits.' } },
+  { t: 106.5, fn: 'action',  args: { text: 'CLI · resolving 4 PR comments' } },
+  { t: 108,  fn: 'cliType',  args: { cmd: 'resolve comments on PR #4522' } },
+  { t: 110,  fn: 'cliAdd',   args: { html: '<div class="cli-sub">• Fetched 4 open comments</div><div class="cli-sub">• Applied 4 fixes</div><div class="cli-sub">• Replied inline to each</div><div class="cli-sub">• Pushed 3 commits to PR branch</div>' } },
+  { t: 112,  fn: 'updatePR', args: {} },
+  { t: 112.5, fn: 'action',  args: { text: 'Developer · 3 commits pushed', tone: 'ok' } },
+  { t: 114,  fn: 'slackCmt', args: {
     cls: 'human', who: 'Vikram · Tech Lead', pill: 'HUMAN', pillCls: 'human', time: '13:24',
     body: '✓ Re-reviewed. LGTM. Merging.' } },
-  { t: 107,  fn: 'mergePR',  args: {} },
+  { t: 115.5, fn: 'mergePR', args: {} },
+  { t: 116,  fn: 'action',   args: { text: '✓ PR MERGED to main', tone: 'ok' } },
 
-  // ============= SCENE 10: Deploy. Report. Done. =============
-  { t: 110,  fn: 'scene',    args: { n: 10, eye: 'SCENE 10 · DEPLOY', title: 'Deploy. Report. Done.', sub: 'DevOps sub-agent generates checklist + rollback plan. Release Manager approves. Canary ramp · zero anomalies · Jira → Done · summary posted.' } },
-  { t: 112,  fn: 'subActive', args: { id: 'devops', state: 'active' } },
-  { t: 113,  fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">DevOps</span> checklist generated · rollback plan ready · environment validation passed.</div>' } },
-  { t: 114.5, fn: 'slackCmt', args: {
+  // ============= SCENE 10: DEPLOY (119-138s, +9) =============
+  { t: 119,  fn: 'scene',    args: { n: 10, eye: 'SCENE 10 · DEPLOY', title: 'Deploy. Report. Done.', sub: 'DevOps sub-agent generates checklist + rollback plan. Release Manager approves. Canary ramp · zero anomalies · Jira → Done · summary posted.' } },
+  { t: 119.5, fn: 'action',  args: { text: 'Lead → DevOps Sub-agent · preparing deploy' } },
+  { t: 121,  fn: 'subActive', args: { id: 'devops', state: 'active' } },
+  { t: 122,  fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">DevOps</span> checklist generated · rollback plan ready · environment validation passed.</div>' } },
+  { t: 123.5, fn: 'slackCmt', args: {
     cls: 'human', who: 'Saanvi · Release Manager', pill: 'HUMAN', pillCls: 'human', time: '14:01',
     body: '✓ Approved. Roll it out. /sdlc deploy PROJ-1842' } },
-  { t: 116,  fn: 'apprDone', args: { id: 'rm' } },
-  { t: 116.5, fn: 'subDone',  args: { id: 'devops' } },
-  { t: 117,  fn: 'cliAdd',   args: { html: '<div class="cli-lead cli-ok">→ canary 5% · 25% · 100% · zero anomalies</div>' } },
-  { t: 118,  fn: 'deploy',   args: { show: true } },
-  { t: 120,  fn: 'subActive', args: { id: 'report', state: 'active' } },
-  { t: 121,  fn: 'jiraStatus', args: { s: 'done', txt: 'Done' } },
-  { t: 122,  fn: 'subDone',  args: { id: 'report' } },
-  { t: 122.5, fn: 'slackCmt', args: {
+  { t: 125,  fn: 'apprDone', args: { id: 'rm' } },
+  { t: 125.3, fn: 'action',  args: { text: 'Release Manager · approved ✓', tone: 'ok' } },
+  { t: 125.5, fn: 'subDone', args: { id: 'devops' } },
+  { t: 126,  fn: 'cliAdd',   args: { html: '<div class="cli-lead cli-ok">→ canary 5% · 25% · 100% · zero anomalies</div>' } },
+  { t: 127,  fn: 'deploy',   args: { show: true } },
+  { t: 127.3, fn: 'action',  args: { text: '🚀 DEPLOYING TO PRODUCTION', tone: 'ok' } },
+  { t: 130,  fn: 'subActive', args: { id: 'report', state: 'active' } },
+  { t: 131,  fn: 'jiraStatus', args: { s: 'done', txt: 'Done' } },
+  { t: 132,  fn: 'subDone',  args: { id: 'report' } },
+  { t: 132.5, fn: 'slackCmt', args: {
     cls: 'bot', who: 'Reporting Agent', pill: 'AGENT', pillCls: 'bot', time: '14:08',
     body: '<strong>PROJ-1842 delivered ✓</strong><br/>Cycle: ~4h · Coverage: 91% · 0 prod incidents · 0 LOC typed by engineer.' } },
-  { t: 125,  fn: 'cliAdd',   args: { html: '<div class="cli-final">✓ PROJ-1842 → Done · ~4 hours · 0 lines typed by hand</div>' } },
+  { t: 134,  fn: 'action',   args: { text: '✓ PROJ-1842 · DONE · cycle ~4h · 0 LOC typed', tone: 'ok' } },
+  { t: 135,  fn: 'cliAdd',   args: { html: '<div class="cli-final">✓ PROJ-1842 → Done · ~4 hours · 0 lines typed by hand</div>' } },
 
-  // ============= End card =============
-  { t: 128,  fn: 'deploy',   args: { show: false } },
-  { t: 128.5, fn: 'end',      args: { show: true } },
-  { t: 138,  fn: 'stop',     args: {} }
+  // ============= End card (138+) =============
+  { t: 138,  fn: 'deploy',   args: { show: false } },
+  { t: 138.5, fn: 'end',     args: { show: true } },
+  { t: 148,  fn: 'stop',     args: {} }
 ];
 
 // ============================================================
@@ -1325,6 +1423,14 @@ function ACTIONS() {
     },
     cursorShow({ show }) {
       $('cursor').classList.toggle('show', show);
+    },
+    action({ text, tone, show }) {
+      const p = $('action-pill');
+      if (show === false) { p.classList.remove('show'); return; }
+      p.classList.remove('warn', 'err', 'ok');
+      if (tone) p.classList.add(tone);
+      $('action-text').innerHTML = text;
+      p.classList.add('show');
     },
     cursorAt({ target, pos, instant }) {
       const cursor = $('cursor');
@@ -1502,6 +1608,9 @@ function reset() {
   $('dash-banner').classList.remove('show');
   $('cursor').classList.remove('show');
   $('cursor').style.transform = 'translate(960px, 540px)';
+  const ap = $('action-pill');
+  ap.classList.remove('show', 'warn', 'err', 'ok');
+  $('action-text').textContent = 'Awaiting trigger';
   $('step-n').textContent = '1';
   $('timer').textContent = '00:00';
 }
