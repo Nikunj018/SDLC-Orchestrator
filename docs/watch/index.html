@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, initial-scale=1.0" />
+<title>SDLC Orchestrator — Demo Video</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #0a0e14;
+  --bg-2: #0e131c;
+  --bg-3: #141a23;
+  --bg-4: #1a2230;
+  --bg-cli: #06090e;
+  --border: #1f2937;
+  --border-soft: #161e2a;
+  --text: #e6edf3;
+  --text-muted: #9aa5b1;
+  --text-dim: #6b7684;
+  --accent: #4ade80;
+  --accent-2: #22d3ee;
+  --accent-3: #a78bfa;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --jira: #2684ff;
+  --slack: #e01e5a;
+  --gh: #58a6ff;
+  --glow: 0 0 24px rgba(74, 222, 128, 0.35);
+  --mono: 'JetBrains Mono', Consolas, monospace;
+  --sans: 'Inter', -apple-system, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: #000;
+  color: var(--text);
+  font-family: var(--sans);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Control bar — hidden during recording */
+.controls {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  display: flex;
+  gap: 8px;
+  background: rgba(20, 26, 35, 0.95);
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+}
+.controls.hidden { display: none; }
+.ctrl {
+  background: var(--bg-4);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.ctrl:hover { border-color: var(--accent); }
+.ctrl.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 700; }
+.ctrl.rec { background: var(--danger); color: white; border-color: var(--danger); font-weight: 700; }
+.ctrl.rec::before { content: '● '; }
+
+/* Stage = 1920x1080 fixed scene area */
+.stage {
+  width: 1920px;
+  height: 1080px;
+  transform-origin: top left;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none;
+}
+
+.stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center top, rgba(74, 222, 128, 0.05), transparent 60%);
+  pointer-events: none;
+}
+
+/* Header strip */
+.head {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 80px;
+  background: rgba(10, 14, 20, 0.6);
+  border-bottom: 1px solid var(--border-soft);
+  display: flex;
+  align-items: center;
+  padding: 0 56px;
+  z-index: 10;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: -0.01em;
+}
+.brand-mark { font-size: 30px; color: var(--accent); }
+.brand em { font-style: normal; color: var(--accent); }
+.head-right { margin-left: auto; display: flex; align-items: center; gap: 24px; }
+.step-pill {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--text-muted);
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+.step-pill strong { color: var(--accent); font-weight: 700; }
+.timer {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+/* Title banner — large fade-in/out between scenes */
+.title-banner {
+  position: absolute;
+  top: 100px;
+  left: 56px;
+  right: 56px;
+  z-index: 9;
+  pointer-events: none;
+}
+.scene-eyebrow {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.scene-title {
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin-bottom: 18px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+.scene-subtitle {
+  font-size: 22px;
+  color: var(--text-muted);
+  font-weight: 400;
+  line-height: 1.4;
+  max-width: 1100px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.6s, transform 0.6s;
+  transition-delay: 0.15s;
+}
+.title-banner.show .scene-eyebrow,
+.title-banner.show .scene-title,
+.title-banner.show .scene-subtitle { opacity: 1; transform: translateY(0); }
+
+/* Main canvas — three columns */
+.canvas {
+  position: absolute;
+  top: 280px;
+  left: 56px;
+  right: 56px;
+  bottom: 80px;
+  display: grid;
+  grid-template-columns: 580px 1fr 580px;
+  gap: 28px;
+}
+
+/* Surface — generic card */
+.surface {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+.surface.highlight {
+  border-color: var(--accent);
+  box-shadow: var(--glow);
+}
+.surface-head {
+  padding: 14px 20px;
+  background: var(--bg-4);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  flex-shrink: 0;
+}
+.surface-head .badge {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+}
+.badge.jira { background: var(--jira); }
+.badge.slack { background: var(--slack); }
+.badge.gh { background: #24292f; color: var(--gh); border: 1px solid var(--border); }
+.surface-head .meta { margin-left: auto; font-size: 12px; color: var(--text-dim); font-family: var(--mono); }
+.surface-body { padding: 18px 20px; flex: 1; overflow-y: auto; }
+.surface-body::-webkit-scrollbar { width: 6px; }
+.surface-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* CLI terminal */
+.cli {
+  background: var(--bg-cli);
+  font-family: var(--mono);
+  font-size: 16px;
+  line-height: 1.65;
+  padding: 22px 26px;
+  flex: 1;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+.cli::-webkit-scrollbar { width: 6px; }
+.cli::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 3px; }
+.cli-line { color: var(--text-muted); white-space: pre-wrap; word-break: break-word; opacity: 0; transition: opacity 0.3s; }
+.cli-line.show { opacity: 1; }
+.cli-cmd { color: var(--text); font-weight: 600; }
+.cli-cmd::before { content: '$ '; color: var(--accent); font-weight: 700; }
+.cli-cmd .cursor {
+  display: inline-block;
+  width: 9px;
+  height: 18px;
+  background: var(--accent);
+  vertical-align: -3px;
+  margin-left: 2px;
+  animation: blink 1s steps(2) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+.cli-lead { color: #c4cdd6; padding: 6px 0; }
+.cli-tag {
+  display: inline-block;
+  background: rgba(74, 222, 128, 0.14);
+  color: var(--accent);
+  padding: 1px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-right: 6px;
+  letter-spacing: 0.04em;
+}
+.cli-sub { color: #8a96a3; padding-left: 22px; }
+.cli-ok { color: var(--accent); font-weight: 600; }
+.cli-err { color: var(--danger); font-weight: 600; }
+.cli-info { color: var(--accent-2); }
+.cli-note {
+  color: var(--accent-3);
+  font-style: italic;
+  background: rgba(167, 139, 250, 0.08);
+  border-left: 2px solid var(--accent-3);
+  padding: 4px 12px;
+  margin: 4px 0;
+}
+.cli-final {
+  color: var(--accent);
+  font-size: 18px;
+  font-weight: 700;
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 12px;
+}
+.cli code {
+  background: #0d1218;
+  color: var(--accent);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 0.92em;
+}
+
+/* Comment list (Jira / GitHub / Slack) */
+.comments { display: flex; flex-direction: column; gap: 14px; }
+.cmt {
+  background: var(--bg-4);
+  border-left: 3px solid var(--border);
+  padding: 12px 14px;
+  border-radius: 6px;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.5s, max-height 0.6s;
+}
+.cmt.show { opacity: 1; max-height: 500px; padding: 12px 14px; }
+.cmt.lead { border-left-color: var(--accent); }
+.cmt.human { border-left-color: var(--accent-2); }
+.cmt.bot { border-left-color: var(--accent-3); }
+.cmt-head { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.cmt-head .who { font-weight: 700; }
+.cmt-head .pill {
+  font-size: 10px;
+  background: rgba(74, 222, 128, 0.18);
+  color: var(--accent);
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.cmt-head .pill.human { background: rgba(34, 211, 238, 0.18); color: var(--accent-2); }
+.cmt-head .pill.bot { background: rgba(167, 139, 250, 0.18); color: var(--accent-3); }
+.cmt-head .time { margin-left: auto; font-weight: 400; font-size: 11px; color: var(--text-dim); font-family: var(--mono); }
+.cmt-body { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
+.cmt-body code { background: var(--bg-2); color: var(--text); padding: 1px 5px; border-radius: 3px; font-family: var(--mono); font-size: 12px; }
+.cmt-body strong { color: var(--text); }
+
+/* Jira ticket card */
+.jira-ticket {
+  background: var(--bg-4);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.jira-key { font-family: var(--mono); font-size: 13px; color: var(--jira); font-weight: 700; margin-bottom: 6px; }
+.jira-summary { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 10px; line-height: 1.3; }
+.jira-status-row { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--text-dim); }
+.jira-status-tag {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  transition: all 0.4s;
+}
+.jira-status-tag.todo { color: var(--text-muted); }
+.jira-status-tag.refine { color: var(--warning); border-color: var(--warning); background: rgba(245, 158, 11, 0.1); }
+.jira-status-tag.progress { color: var(--accent-2); border-color: var(--accent-2); background: rgba(34, 211, 238, 0.1); }
+.jira-status-tag.review { color: var(--accent-3); border-color: var(--accent-3); background: rgba(167, 139, 250, 0.1); }
+.jira-status-tag.done { color: var(--accent); border-color: var(--accent); background: rgba(74, 222, 128, 0.1); }
+
+/* Agent hierarchy (middle column) */
+.hierarchy {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  height: 100%;
+}
+.hierarchy-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.lead-node {
+  background: var(--bg-4);
+  border: 2px solid var(--border);
+  padding: 18px 38px;
+  border-radius: 12px;
+  text-align: center;
+  position: relative;
+  transition: all 0.4s;
+  min-width: 280px;
+}
+.lead-node.active {
+  border-color: var(--accent);
+  background: rgba(74, 222, 128, 0.08);
+  box-shadow: var(--glow);
+}
+.lead-node.active::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 12px;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  animation: pulse 1.6s ease-out infinite;
+}
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.1); opacity: 0; }
+}
+.lead-label { font-weight: 800; font-size: 16px; letter-spacing: 0.05em; }
+.lead-sub { font-size: 12px; color: var(--text-dim); font-style: italic; margin-top: 4px; }
+
+.subs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+.sub {
+  background: var(--bg-4);
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  border-radius: 8px;
+  transition: all 0.3s;
+  position: relative;
+  font-size: 13px;
+}
+.sub-name { font-weight: 700; color: var(--text); display: block; }
+.sub-role { font-size: 11px; color: var(--text-dim); margin-top: 2px; display: block; }
+.sub.active {
+  background: rgba(74, 222, 128, 0.12);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 0 14px rgba(74, 222, 128, 0.3);
+}
+.sub.error {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: var(--danger);
+  animation: shake 0.5s;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+.sub.done { background: rgba(74, 222, 128, 0.04); border-color: rgba(74, 222, 128, 0.4); }
+.sub.done::after {
+  content: '✓';
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  background: var(--accent);
+  color: var(--bg);
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.approvals {
+  width: 100%;
+  margin-top: auto;
+  border-top: 1px solid var(--border-soft);
+  padding-top: 16px;
+}
+.approval-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+.approval-list { display: flex; flex-direction: column; gap: 6px; }
+.appr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  background: var(--bg-2);
+  border-radius: 6px;
+  font-size: 12.5px;
+  border: 1px solid var(--border-soft);
+  opacity: 0.5;
+  transition: all 0.4s;
+}
+.appr.done {
+  opacity: 1;
+  border-color: rgba(74, 222, 128, 0.4);
+  background: rgba(74, 222, 128, 0.05);
+}
+.appr-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--bg-4);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+.appr.done .appr-icon { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.appr.done .appr-icon::before { content: '✓'; }
+.appr-who { font-weight: 600; color: var(--text); }
+.appr-what { color: var(--text-dim); font-size: 11.5px; margin-left: auto; }
+
+/* PR card (GitHub) */
+.pr-card {
+  background: var(--bg-4);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+.pr-key { font-family: var(--mono); font-size: 13px; color: var(--gh); font-weight: 700; }
+.pr-title { font-size: 15px; font-weight: 700; color: var(--text); margin: 6px 0 10px; line-height: 1.3; }
+.pr-stats { display: flex; gap: 14px; font-size: 11px; color: var(--text-dim); font-family: var(--mono); }
+.pr-stats .add { color: var(--accent); }
+.pr-stats .rem { color: var(--danger); }
+.pr-status {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-top: 8px;
+  background: rgba(34, 211, 238, 0.12);
+  color: var(--accent-2);
+  border: 1px solid var(--accent-2);
+  transition: all 0.4s;
+}
+.pr-status.merged { background: rgba(167, 139, 250, 0.12); color: var(--accent-3); border-color: var(--accent-3); }
+
+/* Deploy banner */
+.deploy-banner {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(40px);
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(34, 211, 238, 0.15));
+  border: 2px solid var(--accent);
+  border-radius: 14px;
+  padding: 24px 48px;
+  box-shadow: 0 0 60px rgba(74, 222, 128, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  opacity: 0;
+  transition: opacity 0.6s, transform 0.6s;
+  z-index: 20;
+}
+.deploy-banner.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.deploy-icon { font-size: 44px; }
+.deploy-text strong { display: block; font-size: 24px; font-weight: 800; letter-spacing: 0.04em; color: var(--accent); }
+.deploy-text span { font-size: 15px; color: var(--text-muted); }
+
+/* End card */
+.end-card {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(74, 222, 128, 0.08), transparent 60%), var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s;
+  z-index: 50;
+}
+.end-card.show { opacity: 1; }
+.end-eyebrow {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+.end-title {
+  font-size: 72px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  text-align: center;
+  margin-bottom: 24px;
+  max-width: 1400px;
+}
+.end-title .em { color: var(--accent); }
+.end-sub {
+  font-size: 24px;
+  color: var(--text-muted);
+  font-weight: 400;
+  max-width: 1100px;
+  text-align: center;
+  line-height: 1.5;
+  margin-bottom: 56px;
+}
+.end-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  max-width: 1200px;
+}
+.end-stat { text-align: center; }
+.end-stat-v { font-size: 56px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; }
+.end-stat-l { font-size: 14px; color: var(--text-muted); margin-top: 8px; letter-spacing: 0.04em; }
+.end-foot {
+  position: absolute;
+  bottom: 80px;
+  font-size: 18px;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* Cold-open card */
+.cold-card {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center top, rgba(74, 222, 128, 0.1), transparent 60%), var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.8s;
+  z-index: 60;
+  text-align: center;
+}
+.cold-card.hide { opacity: 0; pointer-events: none; }
+.cold-brand {
+  font-size: 28px;
+  font-weight: 800;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 32px;
+}
+.cold-brand em { font-style: normal; color: var(--accent); }
+.cold-mark { font-size: 36px; color: var(--accent); }
+.cold-title {
+  font-size: 88px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 32px;
+  max-width: 1500px;
+}
+.cold-title .em { color: var(--accent); }
+.cold-sub {
+  font-size: 26px;
+  color: var(--text-muted);
+  max-width: 1100px;
+  line-height: 1.5;
+  margin-bottom: 56px;
+}
+.cold-tag {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--text-dim);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<div class="controls" id="controls">
+  <button class="ctrl primary" id="btn-play">▶ Play (no recording)</button>
+  <button class="ctrl rec" id="btn-record">Record &amp; Download .webm</button>
+  <button class="ctrl" id="btn-fit">Fit to screen</button>
+</div>
+
+<div class="stage" id="stage">
+
+  <!-- Cold open card -->
+  <div class="cold-card" id="cold">
+    <div class="cold-brand">
+      <span class="cold-mark">⌬</span>
+      <span>SDLC<em>Orchestrator</em></span>
+    </div>
+    <div class="cold-title">From <span class="em">Jira ticket</span> to <span class="em">deployed code</span>.<br/>Zero lines typed.</div>
+    <div class="cold-sub">A real engineering team — orchestrated by AI agents. PM, BA, Architect, Developer, QA, Security, Docs, DevOps. The engineer directs. Humans approve every gate.</div>
+    <div class="cold-tag">~4 hours · 5 short CLI prompts · 1 production deploy</div>
+  </div>
+
+  <!-- Header -->
+  <div class="head">
+    <div class="brand"><span class="brand-mark">⌬</span><span>SDLC<em>Orchestrator</em></span></div>
+    <div class="head-right">
+      <div class="step-pill">Step <strong id="step-n">1</strong> / 10</div>
+      <div class="timer" id="timer">00:00</div>
+    </div>
+  </div>
+
+  <!-- Scene title -->
+  <div class="title-banner" id="banner">
+    <div class="scene-eyebrow" id="banner-eye">SCENE 01</div>
+    <div class="scene-title" id="banner-title">Title</div>
+    <div class="scene-subtitle" id="banner-sub">Subtitle</div>
+  </div>
+
+  <!-- Main 3-col canvas -->
+  <div class="canvas">
+
+    <!-- LEFT: Jira -->
+    <div class="surface" id="surf-jira">
+      <div class="surface-head">
+        <span class="badge jira">J</span>
+        <span>Jira · Project Board</span>
+        <span class="meta" id="jira-meta">PROJ-1842</span>
+      </div>
+      <div class="surface-body">
+        <div class="jira-ticket">
+          <div class="jira-key">PROJ-1842 · Feature</div>
+          <div class="jira-summary">Customers can bulk-export invoice history as CSV</div>
+          <div class="jira-status-row">
+            <span class="jira-status-tag todo" id="jira-status">To Do</span>
+            <span>Reporter: PM</span>
+          </div>
+        </div>
+        <div class="comments" id="jira-cmts"></div>
+      </div>
+    </div>
+
+    <!-- MIDDLE: Agent hierarchy + CLI -->
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div class="surface" style="flex: 1.2;">
+        <div class="surface-head">
+          <span style="color: var(--accent); font-size: 18px;">⌬</span>
+          <span>AI Coding CLI · Engineer's terminal</span>
+          <span class="meta" id="cli-meta">~/repo · main</span>
+        </div>
+        <div class="cli" id="cli"></div>
+      </div>
+
+      <div class="hierarchy" style="flex: 1;">
+        <div class="hierarchy-title">Agent Team</div>
+        <div class="lead-node" id="lead">
+          <div class="lead-label">LEAD AGENT</div>
+          <div class="lead-sub">tech lead of the AI team</div>
+        </div>
+        <div class="subs-grid">
+          <div class="sub" data-sub="ba"><span class="sub-name">BA</span><span class="sub-role">Business Analyst</span></div>
+          <div class="sub" data-sub="arc"><span class="sub-name">Architect</span><span class="sub-role">Solution Design</span></div>
+          <div class="sub" data-sub="dev"><span class="sub-name">Developer</span><span class="sub-role">Implementation</span></div>
+          <div class="sub" data-sub="qa"><span class="sub-name">QA</span><span class="sub-role">Test &amp; Verify</span></div>
+          <div class="sub" data-sub="sec"><span class="sub-name">Security</span><span class="sub-role">SAST · Secrets</span></div>
+          <div class="sub" data-sub="docs"><span class="sub-name">Docs</span><span class="sub-role">Help · Release</span></div>
+          <div class="sub" data-sub="devops"><span class="sub-name">DevOps</span><span class="sub-role">Deploy · Rollback</span></div>
+          <div class="sub" data-sub="report"><span class="sub-name">Reporting</span><span class="sub-role">Metrics · Summary</span></div>
+        </div>
+        <div class="approvals">
+          <div class="approval-title">Human Approvals</div>
+          <div class="approval-list">
+            <div class="appr" data-appr="pm"><span class="appr-icon"></span><span class="appr-who">Product Manager</span><span class="appr-what">clarified ticket</span></div>
+            <div class="appr" data-appr="po"><span class="appr-icon"></span><span class="appr-who">Product Owner</span><span class="appr-what">approved stories</span></div>
+            <div class="appr" data-appr="tl"><span class="appr-icon"></span><span class="appr-who">Tech Lead</span><span class="appr-what">approved architecture</span></div>
+            <div class="appr" data-appr="eng"><span class="appr-icon"></span><span class="appr-who">Engineer</span><span class="appr-what">authorised PR</span></div>
+            <div class="appr" data-appr="rm"><span class="appr-icon"></span><span class="appr-who">Release Manager</span><span class="appr-what">approved deploy</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: GitHub + Slack -->
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div class="surface" style="flex: 1;">
+        <div class="surface-head">
+          <span class="badge gh">G</span>
+          <span>GitHub · Pull Request</span>
+          <span class="meta" id="gh-meta">—</span>
+        </div>
+        <div class="surface-body" id="gh-body">
+          <div style="text-align: center; color: var(--text-dim); padding: 40px 20px; font-size: 14px;">
+            No PR yet. Lead Agent has not delegated to Developer.
+          </div>
+        </div>
+      </div>
+      <div class="surface" style="flex: 1;">
+        <div class="surface-head">
+          <span class="badge slack">#</span>
+          <span>Slack · #eng-delivery</span>
+          <span class="meta" id="slack-meta">live</span>
+        </div>
+        <div class="surface-body">
+          <div class="comments" id="slack-cmts"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Deploy banner -->
+  <div class="deploy-banner" id="deploy">
+    <div class="deploy-icon">🚀</div>
+    <div class="deploy-text">
+      <strong>DEPLOYED TO PRODUCTION</strong>
+      <span>v2.14.0 · canary 5% → 25% → 100% · zero anomalies</span>
+    </div>
+  </div>
+
+  <!-- End card -->
+  <div class="end-card" id="end">
+    <div class="end-eyebrow">~4 HOURS LATER</div>
+    <div class="end-title">The team didn't get smaller.<br/><span class="em">The team got a new operating model.</span></div>
+    <div class="end-sub">Engineer typed 5 short prompts. Zero lines of code by hand. Humans approved every gate. Real orchestration — not a one-shot generator.</div>
+    <div class="end-stats">
+      <div class="end-stat"><div class="end-stat-v">~4h</div><div class="end-stat-l">CYCLE TIME</div></div>
+      <div class="end-stat"><div class="end-stat-v">0</div><div class="end-stat-l">LINES TYPED</div></div>
+      <div class="end-stat"><div class="end-stat-v">5</div><div class="end-stat-l">CLI PROMPTS</div></div>
+      <div class="end-stat"><div class="end-stat-v">5</div><div class="end-stat-l">HUMAN GATES</div></div>
+    </div>
+    <div class="end-foot">sdlc-orchestrator · From Jira ticket to deployed code</div>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// SCENE SCRIPT — drives full demo end-to-end
+// Each entry = an action at a given time (seconds from start)
+// ============================================================
+
+const SCRIPT = [
+  // --- Cold open ---
+  { t: 0,    fn: 'cold',     args: { show: true } },
+  { t: 4.5,  fn: 'cold',     args: { show: false } },
+
+  // ============= SCENE 1: Jira ticket exists. Engineer triggers. =============
+  { t: 5,    fn: 'scene',    args: { n: 1, eye: 'SCENE 01 · TRIGGER', title: 'Engineer triggers the orchestrator.', sub: 'One prompt in the AI Coding CLI. No new tool. No agent runs without a human starting it.' } },
+  { t: 6,    fn: 'highlight', args: { id: 'surf-jira' } },
+  { t: 7,    fn: 'jiraStatus', args: { s: 'todo', txt: 'To Do' } },
+  { t: 8,    fn: 'highlight', args: { id: null } },
+  { t: 9,    fn: 'cliType',  args: { cmd: 'start working on PROJ-1842' } },
+  { t: 11.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> Reading PROJ-1842 + similar past tickets (12) + codebase context...</div>' } },
+  { t: 13,   fn: 'leadActive', args: { on: true } },
+
+  // ============= SCENE 2: Lead asks questions, pauses =============
+  { t: 15,   fn: 'scene',    args: { n: 2, eye: 'SCENE 02 · CLARIFY', title: 'Lead Agent asks questions — and pauses.', sub: 'Like a real tech lead. It does not assume. Three things unclear. Comment posted on Jira. Work paused.' } },
+  { t: 17,   fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> 3 clarifications needed. Posted on Jira. <em>Pausing.</em></div>' } },
+  { t: 18,   fn: 'highlight', args: { id: 'surf-jira' } },
+  { t: 19,   fn: 'jiraStatus', args: { s: 'refine', txt: 'In Refinement · Paused' } },
+  { t: 19.5, fn: 'jiraCmt',  args: {
+    cls: 'lead', who: 'Lead Agent', pill: 'AGENT', pillCls: '', time: '10:14',
+    body: '<strong>Before I orchestrate work, 3 clarifications:</strong><br/>1. Date range — hard limit or default?<br/>2. Refunds + credit notes — included?<br/>3. Audit logging required for bulk exports?<br/><br/><em>Pausing. Re-trigger with <code>continue</code> when ready.</em>' } },
+  { t: 22,   fn: 'highlight', args: { id: null } },
+
+  // ============= SCENE 3: PM answers. Engineer continues. BA writes stories. =============
+  { t: 24,   fn: 'scene',    args: { n: 3, eye: 'SCENE 03 · RESUME', title: 'PM answers. Engineer types continue. BA writes stories.', sub: 'PM clarifies between meetings. Engineer reviews, types one word. Lead Agent delegates to BA sub-agent. Product Owner approves.' } },
+  { t: 26,   fn: 'jiraCmt',  args: {
+    cls: 'human', who: 'Priya · PM', pill: 'HUMAN', pillCls: 'human', time: '10:31',
+    body: '1. Default 24 months, hard cap 60. 2. Yes, include both. 3. Yes — audit required (SOC2 control AC-4).' } },
+  { t: 28.5, fn: 'cliType',  args: { cmd: 'continue on PROJ-1842' } },
+  { t: 30,   fn: 'apprDone', args: { id: 'pm' } },
+  { t: 30.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> Resuming. Delegating to <code>BA sub-agent</code> → drafting stories.</div>' } },
+  { t: 31,   fn: 'subActive', args: { id: 'ba', state: 'active' } },
+  { t: 32.5, fn: 'jiraStatus', args: { s: 'progress', txt: 'In Progress' } },
+  { t: 33,   fn: 'jiraCmt',  args: {
+    cls: 'bot', who: 'BA Sub-agent', pill: 'AGENT', pillCls: 'bot', time: '10:34',
+    body: '<strong>Stories drafted (3) · acceptance criteria · edge cases.</strong> Tagged @PO for approval.' } },
+  { t: 35,   fn: 'slackCmt', args: {
+    cls: 'human', who: 'Aman · Product Owner', pill: 'HUMAN', pillCls: 'human', time: '10:38',
+    body: '✓ Stories look right. Approved. /sdlc approve-stories PROJ-1842' } },
+  { t: 37,   fn: 'apprDone', args: { id: 'po' } },
+  { t: 38,   fn: 'subDone',  args: { id: 'ba' } },
+
+  // ============= SCENE 4: Architecture planned. Developer codes. =============
+  { t: 40,   fn: 'scene',    args: { n: 4, eye: 'SCENE 04 · DESIGN + BUILD', title: 'Architecture planned. Developer codes.', sub: 'Architect sub-agent follows ADR-0142 (background jobs). Tech Lead approves. Developer sub-agent picks up — 14 files modified, 4 added, 6 commits.' } },
+  { t: 42,   fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> → <code>Architect sub-agent</code> · loading codebase + ADRs...</div>' } },
+  { t: 43,   fn: 'subActive', args: { id: 'arc', state: 'active' } },
+  { t: 45,   fn: 'cliAdd',   args: { html: '<div class="cli-sub">• Impact: 3 services · 1 frontend module</div><div class="cli-sub">• Pattern: follows team ADR-0142 (background jobs)</div><div class="cli-sub">• Plan posted to Jira. Awaiting Tech Lead.</div>' } },
+  { t: 47,   fn: 'slackCmt', args: {
+    cls: 'human', who: 'Vikram · Tech Lead', pill: 'HUMAN', pillCls: 'human', time: '10:52',
+    body: '✓ Architecture LGTM. /sdlc approve-arch PROJ-1842' } },
+  { t: 48.5, fn: 'apprDone', args: { id: 'tl' } },
+  { t: 49,   fn: 'subDone',  args: { id: 'arc' } },
+  { t: 49.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> → <code>Developer sub-agent</code> · branch <code>feature/PROJ-1842-invoice-export</code></div>' } },
+  { t: 50,   fn: 'subActive', args: { id: 'dev', state: 'active' } },
+  { t: 51,   fn: 'cliAdd',   args: { html: '<div class="cli-sub">• 14 files modified · 4 added</div><div class="cli-sub">• 6 commits pushed to remote</div>' } },
+
+  // ============= SCENE 5: QA finds bugs. Routes back. =============
+  { t: 54,   fn: 'scene',    args: { n: 5, eye: 'SCENE 05 · QA LOOP', title: 'QA finds bugs. Lead routes back to Developer.', sub: 'Real orchestration. Two test failures. The Lead Agent doesn\'t paper over QA findings. It routes back — exactly as a real tech lead would.' } },
+  { t: 56,   fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Lead Agent</span> → <code>QA sub-agent</code> · running test suite...</div>' } },
+  { t: 57,   fn: 'subDone',  args: { id: 'dev' } },
+  { t: 57.5, fn: 'subActive', args: { id: 'qa', state: 'active' } },
+  { t: 59,   fn: 'cliAdd',   args: { html: '<div class="cli-line cli-err">✗ 2 tests failing:</div><div class="cli-sub" style="color: #fca5a5;">· test_export_date_range_max — 60mo boundary off-by-one</div><div class="cli-sub" style="color: #fca5a5;">· test_audit_event_emission — event not emitted on background path</div>' } },
+  { t: 60.5, fn: 'subActive', args: { id: 'qa', state: 'error' } },
+  { t: 61.5, fn: 'cliAdd',   args: { html: '<div class="cli-note">Lead Agent · Routing back to Developer sub-agent with QA findings.</div>' } },
+
+  // ============= SCENE 6: Dev fixes. QA re-validates. Green. =============
+  { t: 64,   fn: 'scene',    args: { n: 6, eye: 'SCENE 06 · FIX + RE-VALIDATE', title: 'Developer patches. QA re-runs. All green.', sub: 'Two precise fixes — boundary check and audit emission. 47/47 tests pass. Coverage on new code: 91%. This is the back-and-forth that makes it real.' } },
+  { t: 66,   fn: 'subActive', args: { id: 'dev', state: 'active' } },
+  { t: 67,   fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Developer</span> patching <code>export.go:84</code> (boundary) + <code>export.go:142</code> (audit emit).</div>' } },
+  { t: 69,   fn: 'subDone',  args: { id: 'dev' } },
+  { t: 69.5, fn: 'subActive', args: { id: 'qa', state: 'active' } },
+  { t: 70.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead cli-ok">✓ 47/47 tests passing · coverage 91%</div>' } },
+  { t: 72,   fn: 'subDone',  args: { id: 'qa' } },
+
+  // ============= SCENE 7: Security + Docs. Raise PR? =============
+  { t: 74,   fn: 'scene',    args: { n: 7, eye: 'SCENE 07 · GATE', title: 'Security + Docs done. "Raise the PR?"', sub: 'SAST clean. Secrets clean. Multi-tenant isolation verified. Release notes drafted. Lead Agent asks the engineer before raising the PR — never unprompted.' } },
+  { t: 76,   fn: 'subActive', args: { id: 'sec', state: 'active' } },
+  { t: 77,   fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Security</span> SAST clean · secrets clean · tenant isolation verified.</div>' } },
+  { t: 78,   fn: 'subDone',  args: { id: 'sec' } },
+  { t: 78.5, fn: 'subActive', args: { id: 'docs', state: 'active' } },
+  { t: 79.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">Docs</span> help-center updated · release notes drafted · OpenAPI validated.</div>' } },
+  { t: 80.5, fn: 'subDone',  args: { id: 'docs' } },
+  { t: 81.5, fn: 'cliAdd',   args: { html: '<div class="cli-lead cli-info">Lead Agent · Should I raise the PR? [y/N]</div>' } },
+  { t: 83,   fn: 'cliType',  args: { cmd: 'y' } },
+  { t: 84.5, fn: 'apprDone', args: { id: 'eng' } },
+  { t: 85,   fn: 'cliAdd',   args: { html: '<div class="cli-lead cli-ok">✓ PR #4522 opened · reviewers tagged · awaiting review.</div>' } },
+  { t: 85.5, fn: 'jiraStatus', args: { s: 'review', txt: 'In Review' } },
+  { t: 86,   fn: 'showPR',   args: {} },
+
+  // ============= SCENE 8: Tech Lead invokes PR Reviewer Agent =============
+  { t: 89,   fn: 'scene',    args: { n: 8, eye: 'SCENE 08 · ON-DEMAND REVIEW', title: 'Tech Lead invokes PR Reviewer Agent.', sub: 'Not auto-triggered. The Tech Lead pulls it in from Slack. 3 actionable items · 2 needing human judgment. AI assists; humans decide.' } },
+  { t: 91,   fn: 'slackCmt', args: {
+    cls: 'human', who: 'Vikram · Tech Lead', pill: 'HUMAN', pillCls: 'human', time: '13:02',
+    body: '@pr-reviewer review PR #4522' } },
+  { t: 93,   fn: 'addPRReview', args: {} },
+  { t: 95,   fn: 'slackCmt', args: {
+    cls: 'human', who: 'Vikram · Tech Lead', pill: 'HUMAN', pillCls: 'human', time: '13:08',
+    body: 'Added my notes on rate-limit copy. Engineer — please action the 4 inline comments.' } },
+
+  // ============= SCENE 9: Engineer resolves via CLI =============
+  { t: 98,   fn: 'scene',    args: { n: 9, eye: 'SCENE 09 · RESOLVE', title: 'Engineer resolves comments — via the same CLI.', sub: 'No manual fixes typed. Same CLI, one prompt. Fetches 4 comments · applies fixes · replies inline · pushes 3 commits.' } },
+  { t: 100,  fn: 'cliType',  args: { cmd: 'resolve comments on PR #4522' } },
+  { t: 102,  fn: 'cliAdd',   args: { html: '<div class="cli-sub">• Fetched 4 open comments</div><div class="cli-sub">• Applied 4 fixes</div><div class="cli-sub">• Replied inline to each</div><div class="cli-sub">• Pushed 3 commits to PR branch</div>' } },
+  { t: 104,  fn: 'updatePR', args: {} },
+  { t: 105.5, fn: 'slackCmt', args: {
+    cls: 'human', who: 'Vikram · Tech Lead', pill: 'HUMAN', pillCls: 'human', time: '13:24',
+    body: '✓ Re-reviewed. LGTM. Merging.' } },
+  { t: 107,  fn: 'mergePR',  args: {} },
+
+  // ============= SCENE 10: Deploy. Report. Done. =============
+  { t: 110,  fn: 'scene',    args: { n: 10, eye: 'SCENE 10 · DEPLOY', title: 'Deploy. Report. Done.', sub: 'DevOps sub-agent generates checklist + rollback plan. Release Manager approves. Canary ramp · zero anomalies · Jira → Done · summary posted.' } },
+  { t: 112,  fn: 'subActive', args: { id: 'devops', state: 'active' } },
+  { t: 113,  fn: 'cliAdd',   args: { html: '<div class="cli-lead"><span class="cli-tag">DevOps</span> checklist generated · rollback plan ready · environment validation passed.</div>' } },
+  { t: 114.5, fn: 'slackCmt', args: {
+    cls: 'human', who: 'Saanvi · Release Manager', pill: 'HUMAN', pillCls: 'human', time: '14:01',
+    body: '✓ Approved. Roll it out. /sdlc deploy PROJ-1842' } },
+  { t: 116,  fn: 'apprDone', args: { id: 'rm' } },
+  { t: 116.5, fn: 'subDone',  args: { id: 'devops' } },
+  { t: 117,  fn: 'cliAdd',   args: { html: '<div class="cli-lead cli-ok">→ canary 5% · 25% · 100% · zero anomalies</div>' } },
+  { t: 118,  fn: 'deploy',   args: { show: true } },
+  { t: 120,  fn: 'subActive', args: { id: 'report', state: 'active' } },
+  { t: 121,  fn: 'jiraStatus', args: { s: 'done', txt: 'Done' } },
+  { t: 122,  fn: 'subDone',  args: { id: 'report' } },
+  { t: 122.5, fn: 'slackCmt', args: {
+    cls: 'bot', who: 'Reporting Agent', pill: 'AGENT', pillCls: 'bot', time: '14:08',
+    body: '<strong>PROJ-1842 delivered ✓</strong><br/>Cycle: ~4h · Coverage: 91% · 0 prod incidents · 0 LOC typed by engineer.' } },
+  { t: 125,  fn: 'cliAdd',   args: { html: '<div class="cli-final">✓ PROJ-1842 → Done · ~4 hours · 0 lines typed by hand</div>' } },
+
+  // ============= End card =============
+  { t: 128,  fn: 'deploy',   args: { show: false } },
+  { t: 128.5, fn: 'end',      args: { show: true } },
+  { t: 138,  fn: 'stop',     args: {} }
+];
+
+// ============================================================
+// SCENE ENGINE
+// ============================================================
+const $ = (id) => document.getElementById(id);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+let startTime = null;
+let timerInt = null;
+let recording = false;
+let mediaRecorder = null;
+let recordedChunks = [];
+
+function fmtTime(s) {
+  const m = Math.floor(s / 60);
+  const r = Math.floor(s % 60);
+  return `${String(m).padStart(2,'0')}:${String(r).padStart(2,'0')}`;
+}
+
+function ACTIONS() {
+  return {
+    cold({ show }) {
+      $('cold').classList.toggle('hide', !show);
+    },
+    scene({ n, eye, title, sub }) {
+      $('step-n').textContent = n;
+      const b = $('banner');
+      b.classList.remove('show');
+      setTimeout(() => {
+        $('banner-eye').textContent = eye;
+        $('banner-title').textContent = title;
+        $('banner-sub').textContent = sub;
+        b.classList.add('show');
+      }, 250);
+    },
+    highlight({ id }) {
+      $$('.surface').forEach(s => s.classList.remove('highlight'));
+      if (id) $(id).classList.add('highlight');
+    },
+    leadActive({ on }) {
+      $('lead').classList.toggle('active', on);
+    },
+    subActive({ id, state }) {
+      const el = document.querySelector(`.sub[data-sub="${id}"]`);
+      if (!el) return;
+      el.classList.remove('active', 'error', 'done');
+      el.classList.add(state);
+    },
+    subDone({ id }) {
+      const el = document.querySelector(`.sub[data-sub="${id}"]`);
+      if (!el) return;
+      el.classList.remove('active', 'error');
+      el.classList.add('done');
+    },
+    apprDone({ id }) {
+      const el = document.querySelector(`.appr[data-appr="${id}"]`);
+      if (el) el.classList.add('done');
+    },
+    cliType({ cmd }) {
+      const cli = $('cli');
+      const line = document.createElement('div');
+      line.className = 'cli-line cli-cmd show';
+      cli.appendChild(line);
+      let i = 0;
+      const cursor = document.createElement('span');
+      cursor.className = 'cursor';
+      line.appendChild(cursor);
+      const typer = setInterval(() => {
+        if (i >= cmd.length) { clearInterval(typer); cursor.remove(); return; }
+        line.insertBefore(document.createTextNode(cmd[i]), cursor);
+        i++;
+        cli.scrollTop = cli.scrollHeight;
+      }, 55);
+    },
+    cliAdd({ html }) {
+      const cli = $('cli');
+      const wrap = document.createElement('div');
+      wrap.innerHTML = html;
+      Array.from(wrap.children).forEach(c => {
+        c.classList.add('show');
+        cli.appendChild(c);
+      });
+      cli.scrollTop = cli.scrollHeight;
+    },
+    jiraStatus({ s, txt }) {
+      const t = $('jira-status');
+      t.className = 'jira-status-tag ' + s;
+      t.textContent = txt;
+    },
+    jiraCmt({ cls, who, pill, pillCls, time, body }) {
+      addComment('jira-cmts', { cls, who, pill, pillCls, time, body });
+    },
+    slackCmt({ cls, who, pill, pillCls, time, body }) {
+      addComment('slack-cmts', { cls, who, pill, pillCls, time, body });
+    },
+    showPR() {
+      $('gh-meta').textContent = 'PR #4522';
+      $('gh-body').innerHTML = `
+        <div class="pr-card">
+          <div class="pr-key">#4522 · feature/PROJ-1842-invoice-export</div>
+          <div class="pr-title">Bulk invoice CSV export with background job + audit log</div>
+          <div class="pr-stats"><span class="add">+847</span><span class="rem">−123</span><span>18 files</span><span>9 commits</span></div>
+          <div class="pr-status" id="pr-status">OPEN · review requested</div>
+        </div>
+        <div class="comments" id="gh-cmts"></div>
+      `;
+    },
+    addPRReview() {
+      const list = $('gh-cmts');
+      if (!list) return;
+      [
+        { cls: 'bot', who: 'PR Reviewer Agent', pill: 'AGENT', pillCls: 'bot', time: '13:04', body: '<strong>3 actionable · 2 need judgment.</strong><br/>• <code>export.go:38</code> — threshold should be config, not hard-coded<br/>• <code>export.go:91</code> — wrap error with <code>%w</code><br/>• <code>handler.go:54</code> — rename <code>tmp</code> → <code>partial</code><br/>• <em>Judgment</em>: confirm rate-limit (~customer-facing copy)' },
+      ].forEach(c => addCommentInto(list, c));
+    },
+    updatePR() {
+      const list = $('gh-cmts');
+      if (!list) return;
+      addCommentInto(list, { cls: 'bot', who: 'AI Coding CLI', pill: 'AGENT', pillCls: 'bot', time: '13:19', body: '<strong>4 comments resolved · 3 commits pushed.</strong> Replied inline. Re-review requested.' });
+    },
+    mergePR() {
+      const s = $('pr-status');
+      if (s) { s.className = 'pr-status merged'; s.textContent = 'MERGED'; }
+    },
+    deploy({ show }) {
+      $('deploy').classList.toggle('show', show);
+    },
+    end({ show }) {
+      $('end').classList.toggle('show', show);
+    },
+    stop() {
+      stopAll();
+    }
+  };
+}
+
+function addComment(listId, c) { addCommentInto($(listId), c); }
+function addCommentInto(list, { cls, who, pill, pillCls, time, body }) {
+  if (!list) return;
+  const el = document.createElement('div');
+  el.className = 'cmt ' + cls;
+  el.innerHTML = `
+    <div class="cmt-head">
+      <span class="who">${who}</span>
+      ${pill ? `<span class="pill ${pillCls||''}">${pill}</span>` : ''}
+      <span class="time">${time}</span>
+    </div>
+    <div class="cmt-body">${body}</div>
+  `;
+  list.appendChild(el);
+  // force layout so transition runs
+  el.offsetHeight;
+  requestAnimationFrame(() => el.classList.add('show'));
+  list.scrollTop = list.scrollHeight;
+}
+
+function reset() {
+  $('cli').innerHTML = '';
+  $('jira-cmts').innerHTML = '';
+  $('slack-cmts').innerHTML = '';
+  $('gh-body').innerHTML = '<div style="text-align: center; color: var(--text-dim); padding: 40px 20px; font-size: 14px;">No PR yet. Lead Agent has not delegated to Developer.</div>';
+  $('gh-meta').textContent = '—';
+  $('jira-status').className = 'jira-status-tag todo';
+  $('jira-status').textContent = 'To Do';
+  $$('.sub').forEach(s => s.classList.remove('active', 'error', 'done'));
+  $$('.appr').forEach(a => a.classList.remove('done'));
+  $('lead').classList.remove('active');
+  $('deploy').classList.remove('show');
+  $('end').classList.remove('show');
+  $('banner').classList.remove('show');
+  $('cold').classList.remove('hide');
+  $('step-n').textContent = '1';
+  $('timer').textContent = '00:00';
+}
+
+function runScene() {
+  reset();
+  startTime = performance.now();
+  const acts = ACTIONS();
+  let idx = 0;
+  function tick() {
+    const elapsed = (performance.now() - startTime) / 1000;
+    $('timer').textContent = fmtTime(elapsed);
+    while (idx < SCRIPT.length && SCRIPT[idx].t <= elapsed) {
+      const step = SCRIPT[idx];
+      try { acts[step.fn](step.args); } catch (e) { console.error(step, e); }
+      idx++;
+    }
+    if (idx < SCRIPT.length) {
+      requestAnimationFrame(tick);
+    }
+  }
+  requestAnimationFrame(tick);
+}
+
+function stopAll() {
+  if (mediaRecorder && mediaRecorder.state === 'recording') {
+    mediaRecorder.stop();
+  }
+}
+
+// ============================================================
+// FIT-TO-SCREEN — scale 1920x1080 stage to viewport
+// ============================================================
+function fitStage() {
+  const stage = $('stage');
+  const sx = window.innerWidth / 1920;
+  const sy = window.innerHeight / 1080;
+  const s = Math.min(sx, sy);
+  stage.style.transform = `scale(${s})`;
+  document.body.style.background = '#000';
+  stage.style.position = 'absolute';
+  stage.style.left = `${(window.innerWidth - 1920 * s) / 2}px`;
+  stage.style.top = `${(window.innerHeight - 1080 * s) / 2}px`;
+}
+window.addEventListener('resize', fitStage);
+
+// ============================================================
+// CONTROLS
+// ============================================================
+$('btn-play').addEventListener('click', () => {
+  runScene();
+});
+
+$('btn-fit').addEventListener('click', fitStage);
+
+$('btn-record').addEventListener('click', async () => {
+  try {
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      video: { frameRate: 30 },
+      audio: false
+    });
+    recordedChunks = [];
+    const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm';
+    mediaRecorder = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 8_000_000 });
+    mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) recordedChunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+      stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(recordedChunks, { type: 'video/webm' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `sdlc-orchestrator-demo-${Date.now()}.webm`;
+      a.click();
+      URL.revokeObjectURL(url);
+      $('controls').classList.remove('hidden');
+    };
+    $('controls').classList.add('hidden');
+    mediaRecorder.start();
+    runScene();
+  } catch (err) {
+    alert('Recording cancelled or not supported: ' + err.message);
+  }
+});
+
+// Init
+fitStage();
+</script>
+
+</body>
+</html>
