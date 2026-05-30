@@ -49,36 +49,80 @@ html, body {
   justify-content: center;
 }
 
-/* Control bar — hidden during recording */
-.controls {
+/* Player bar — bottom-center, hidden during recording */
+.player-bar {
   position: fixed;
-  top: 16px;
-  right: 16px;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1000;
   display: flex;
-  gap: 8px;
-  background: rgba(20, 26, 35, 0.95);
-  padding: 10px 14px;
-  border-radius: 10px;
+  align-items: center;
+  gap: 10px;
+  background: rgba(14, 19, 28, 0.96);
+  padding: 12px 14px;
+  border-radius: 14px;
   border: 1px solid var(--border);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  max-width: calc(100vw - 32px);
+  flex-wrap: wrap;
+  justify-content: center;
 }
-.controls.hidden { display: none; }
-.ctrl {
+.player-bar.hidden { display: none; }
+.pbtn {
   background: var(--bg-4);
   border: 1px solid var(--border);
   color: var(--text);
   font-family: var(--sans);
-  font-size: 13px;
-  font-weight: 500;
-  padding: 8px 14px;
-  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  padding: 0;
 }
-.ctrl:hover { border-color: var(--accent); }
-.ctrl.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 700; }
-.ctrl.rec { background: var(--danger); color: white; border-color: var(--danger); font-weight: 700; }
-.ctrl.rec::before { content: '● '; }
+.pbtn:hover { border-color: var(--accent); color: var(--accent); }
+.pbtn:disabled { opacity: 0.35; cursor: not-allowed; }
+.pbtn.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); width: 50px; height: 50px; font-size: 18px; }
+.pbtn.primary:hover { background: #5ee896; color: var(--bg); border-color: #5ee896; }
+.pbtn.rec { background: var(--danger); color: white; border-color: var(--danger); font-size: 14px; padding: 0 14px; width: auto; gap: 6px; }
+.pbtn.rec:hover { background: #c92a2a; color: white; border-color: #c92a2a; }
+.pbtn.wide { width: auto; padding: 0 14px; font-size: 13px; font-weight: 500; }
+.pbtn.wide:hover { color: var(--accent); }
+.player-info {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 0 14px;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  min-width: 240px;
+  text-align: center;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+}
+.player-info .step-name { display: block; color: var(--text); font-weight: 700; font-size: 12px; margin-top: 2px; }
+.player-info .step-num { color: var(--accent); font-weight: 800; }
+.player-dots { display: flex; gap: 6px; padding: 0 6px; flex-wrap: wrap; max-width: 360px; justify-content: center; }
+.dot-scene {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--bg-4);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.dot-scene:hover { border-color: var(--text-muted); transform: scale(1.2); }
+.dot-scene.active { background: var(--accent); border-color: var(--accent); transform: scale(1.35); box-shadow: 0 0 8px rgba(74, 222, 128, 0.5); }
+.dot-scene.done { background: rgba(74, 222, 128, 0.4); border-color: rgba(74, 222, 128, 0.5); }
 
 /* Stage = 1920x1080 fixed scene area */
 .stage {
@@ -805,8 +849,35 @@ html, body {
   font-weight: 900;
   color: white;
 }
+.dash-eyebrow-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: var(--jira);
+  background: rgba(38, 132, 255, 0.14);
+  border: 1px solid rgba(38, 132, 255, 0.5);
+  padding: 4px 12px;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
 .dash-project-name { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
 .dash-project-meta { font-size: 13px; color: var(--text-dim); margin-top: 2px; font-family: var(--mono); letter-spacing: 0.04em; }
+.dash-screen-label {
+  position: absolute;
+  top: 90px;
+  right: 56px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(74, 222, 128, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  padding: 6px 14px;
+  border-radius: 20px;
+}
 .dash-user {
   margin-left: auto;
   display: flex;
@@ -954,10 +1025,18 @@ html, body {
 </head>
 <body>
 
-<div class="controls" id="controls">
-  <button class="ctrl primary" id="btn-play">▶ Play (no recording)</button>
-  <button class="ctrl rec" id="btn-record">Record &amp; Download .webm</button>
-  <button class="ctrl" id="btn-fit">Toggle fit (width / screen)</button>
+<div class="player-bar" id="controls">
+  <button class="pbtn" id="btn-prev" title="Previous scene">⏮</button>
+  <button class="pbtn primary" id="btn-playpause" title="Play / Pause">▶</button>
+  <button class="pbtn" id="btn-next" title="Next scene">⏭</button>
+  <button class="pbtn wide" id="btn-restart" title="Restart from start">↺ Restart</button>
+  <div class="player-info" id="player-info">
+    <span class="step-num">0</span> / 11<br/>
+    <span class="step-name" id="player-step-name">Press ▶ to start</span>
+  </div>
+  <div class="player-dots" id="scene-dots"></div>
+  <button class="pbtn rec" id="btn-record" title="Record .webm">● REC</button>
+  <button class="pbtn wide" id="btn-fit" title="Toggle fit">⛶ Fit</button>
 </div>
 
 <div class="wrap" id="wrap">
@@ -979,8 +1058,9 @@ html, body {
     <div class="dash-head">
       <div class="dash-jira-logo">J</div>
       <div>
-        <div class="dash-project-name">Customer Platform</div>
-        <div class="dash-project-meta">Sprint 47 · 8 days remaining</div>
+        <div class="dash-eyebrow-tag">JIRA DASHBOARD</div>
+        <div class="dash-project-name">Customer Platform · Sprint 47</div>
+        <div class="dash-project-meta">Engineer's morning view · 8 days remaining</div>
       </div>
       <div class="dash-user">
         <span>Aarav Mehta · Senior Engineer</span>
@@ -1395,9 +1475,6 @@ const SCRIPT = [
 const $ = (id) => document.getElementById(id);
 const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
-let startTime = null;
-let timerInt = null;
-let recording = false;
 let mediaRecorder = null;
 let recordedChunks = [];
 
@@ -1615,27 +1692,150 @@ function reset() {
   $('timer').textContent = '00:00';
 }
 
-function runScene() {
-  reset();
-  startTime = performance.now();
-  const acts = ACTIONS();
-  let idx = 0;
-  function tick() {
-    const elapsed = (performance.now() - startTime) / 1000;
-    $('timer').textContent = fmtTime(elapsed);
-    while (idx < SCRIPT.length && SCRIPT[idx].t <= elapsed) {
-      const step = SCRIPT[idx];
-      try { acts[step.fn](step.args); } catch (e) { console.error(step, e); }
-      idx++;
+// ============================================================
+// PLAYER ENGINE — play / pause / prev / next / jump to scene
+// ============================================================
+const SCENES = [
+  { t: 0,     n: 'Intro · JIRA Dashboard' },
+  { t: 6,     n: 'Scene 1 · Trigger' },
+  { t: 16,    n: 'Scene 2 · Clarify' },
+  { t: 26,    n: 'Scene 3 · Resume + BA' },
+  { t: 43,    n: 'Scene 4 · Design + Build' },
+  { t: 58,    n: 'Scene 5 · QA Loop' },
+  { t: 69,    n: 'Scene 6 · Fix + Re-validate' },
+  { t: 80,    n: 'Scene 7 · Gate' },
+  { t: 96,    n: 'Scene 8 · On-demand Review' },
+  { t: 106,   n: 'Scene 9 · Resolve' },
+  { t: 119,   n: 'Scene 10 · Deploy' },
+  { t: 138.5, n: 'End · Summary' }
+];
+
+let elapsed = 0;
+let appliedIdx = 0;
+let isPlaying = false;
+let rafLast = 0;
+let rafId = null;
+
+function applyOne(step, acts, fast) {
+  try {
+    if (fast && step.fn === 'cliType') {
+      // skip typing animation when fast-forwarding — render command instantly
+      acts.cliAdd({ html: `<div class="cli-line cli-cmd show">${step.args.cmd.replace(/</g, '&lt;')}</div>` });
+    } else {
+      acts[step.fn](step.args);
     }
-    if (idx < SCRIPT.length) {
-      requestAnimationFrame(tick);
+  } catch (e) { console.error(step, e); }
+}
+
+function applyForward(targetT, fast) {
+  const acts = ACTIONS();
+  while (appliedIdx < SCRIPT.length && SCRIPT[appliedIdx].t <= targetT) {
+    applyOne(SCRIPT[appliedIdx], acts, fast);
+    appliedIdx++;
+  }
+}
+
+function currentSceneIdx() {
+  let idx = 0;
+  for (let i = 0; i < SCENES.length; i++) {
+    if (SCENES[i].t <= elapsed + 0.4) idx = i;
+    else break;
+  }
+  return idx;
+}
+
+function updatePlayerUI() {
+  const idx = currentSceneIdx();
+  const name = SCENES[idx].n;
+  $('player-info').innerHTML = `<span class="step-num">${idx}</span> / ${SCENES.length - 1}<br/><span class="step-name">${name}</span>`;
+  $$('.dot-scene').forEach((d, i) => {
+    d.classList.toggle('active', i === idx);
+    d.classList.toggle('done', i < idx);
+  });
+  $('btn-prev').disabled = idx <= 0;
+  $('btn-next').disabled = idx >= SCENES.length - 1;
+  $('step-n').textContent = Math.max(1, idx);
+  $('timer').textContent = fmtTime(elapsed);
+}
+
+function tick() {
+  rafId = requestAnimationFrame(tick);
+  const now = performance.now();
+  if (isPlaying) {
+    elapsed += (now - rafLast) / 1000;
+    applyForward(elapsed, false);
+    updatePlayerUI();
+    if (appliedIdx >= SCRIPT.length) {
+      pause();
     }
   }
-  requestAnimationFrame(tick);
+  rafLast = now;
+}
+
+function play() {
+  if (isPlaying) return;
+  if (appliedIdx >= SCRIPT.length) {
+    // Auto-restart if at end
+    restart();
+  }
+  isPlaying = true;
+  rafLast = performance.now();
+  $('btn-playpause').textContent = '⏸';
+  if (!rafId) tick();
+}
+
+function pause() {
+  isPlaying = false;
+  $('btn-playpause').textContent = '▶';
+}
+
+function togglePlay() {
+  if (isPlaying) pause();
+  else play();
+}
+
+function restart() {
+  pause();
+  reset();
+  appliedIdx = 0;
+  elapsed = 0;
+  updatePlayerUI();
+}
+
+function jumpToScene(idx) {
+  if (idx < 0 || idx >= SCENES.length) return;
+  const wasPlaying = isPlaying;
+  pause();
+  const target = SCENES[idx].t;
+  if (target < elapsed) {
+    // Jumping backward: full reset then replay
+    reset();
+    appliedIdx = 0;
+    elapsed = 0;
+  }
+  applyForward(target, true);
+  elapsed = target;
+  updatePlayerUI();
+  if (wasPlaying) play();
+}
+
+function nextScene() { jumpToScene(currentSceneIdx() + 1); }
+function prevScene() { jumpToScene(currentSceneIdx() - 1); }
+
+function buildDots() {
+  const wrap = $('scene-dots');
+  wrap.innerHTML = '';
+  SCENES.forEach((s, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot-scene';
+    d.title = s.n;
+    d.addEventListener('click', () => jumpToScene(i));
+    wrap.appendChild(d);
+  });
 }
 
 function stopAll() {
+  pause();
   if (mediaRecorder && mediaRecorder.state === 'recording') {
     mediaRecorder.stop();
   }
@@ -1673,11 +1873,20 @@ document.fonts && document.fonts.ready && document.fonts.ready.then(applyFit);
 // ============================================================
 // CONTROLS
 // ============================================================
-$('btn-play').addEventListener('click', () => {
-  runScene();
-});
-
+$('btn-playpause').addEventListener('click', togglePlay);
+$('btn-prev').addEventListener('click', prevScene);
+$('btn-next').addEventListener('click', nextScene);
+$('btn-restart').addEventListener('click', () => { restart(); });
 $('btn-fit').addEventListener('click', fitStage);
+
+// Keyboard shortcuts: space = play/pause, ←/→ = prev/next, r = restart
+window.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+  else if (e.code === 'ArrowRight') { e.preventDefault(); nextScene(); }
+  else if (e.code === 'ArrowLeft') { e.preventDefault(); prevScene(); }
+  else if (e.code === 'KeyR') { e.preventDefault(); restart(); }
+});
 
 $('btn-record').addEventListener('click', async () => {
   try {
@@ -1702,13 +1911,16 @@ $('btn-record').addEventListener('click', async () => {
     };
     $('controls').classList.add('hidden');
     mediaRecorder.start();
-    runScene();
+    restart();
+    play();
   } catch (err) {
     alert('Recording cancelled or not supported: ' + err.message);
   }
 });
 
 // Init
+buildDots();
+updatePlayerUI();
 applyFit();
 </script>
 
