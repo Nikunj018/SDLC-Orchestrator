@@ -32,7 +32,7 @@ Pair with the live website demo at `website/index.html`.
 >
 > Lead Agent asks: *raise PR?* Engineer types `y`. PR opens. Tech Lead invokes the PR Reviewer Agent. Engineer resolves comments by typing `resolve comments on PR #4522` in the same CLI — the CLI fetches, fixes, pushes. DevOps prepares deploy. Release Manager approves. Shipped.
 >
-> Total: ~4 hours, ~5 short prompts, ~30 min of human attention, zero lines of code typed.
+> Total: ~1 hour, ~5 short prompts, ~30 min of human attention, zero lines of code typed.
 
 ### 4. Why it's bespoke (1.5 min)
 

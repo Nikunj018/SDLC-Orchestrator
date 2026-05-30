@@ -186,7 +186,7 @@ const STEPS = [
   },
   {
     title: "DevOps prepares. Release Manager approves. DEPLOYED.",
-    desc: "On merge, the DevOps sub-agent prepares the deployment checklist, generates the rollback plan, and validates environments. Release Manager approves in Slack. Deploy executes. The Reporting sub-agent posts the delivery summary. <strong>~4 hours · ~5 short prompts by the engineer · 0 lines of code typed.</strong>",
+    desc: "On merge, the DevOps sub-agent prepares the deployment checklist, generates the rollback plan, and validates environments. Release Manager approves in Slack. Deploy executes. The Reporting sub-agent posts the delivery summary. <strong>~1 hour · ~5 short prompts by the engineer · 0 lines of code typed.</strong>",
     meta: {
       typed: "—",
       agent: "DevOps + Reporting (complete)",

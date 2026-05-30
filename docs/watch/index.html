@@ -971,7 +971,7 @@ html, body {
     </div>
     <div class="cold-title">From <span class="em">Jira ticket</span> to <span class="em">deployed code</span>.<br/>Zero lines typed.</div>
     <div class="cold-sub">A real engineering team — orchestrated by AI agents. PM, BA, Architect, Developer, QA, Security, Docs, DevOps. The engineer directs. Humans approve every gate.</div>
-    <div class="cold-tag">~4 hours · 5 short CLI prompts · 1 production deploy</div>
+    <div class="cold-tag">~1 hour · 5 short CLI prompts · 1 production deploy</div>
   </div>
 
   <!-- Jira dashboard scene (engineer's morning view) -->
@@ -1194,11 +1194,11 @@ html, body {
 
   <!-- End card -->
   <div class="end-card" id="end">
-    <div class="end-eyebrow">~4 HOURS LATER</div>
+    <div class="end-eyebrow">~1 HOUR LATER</div>
     <div class="end-title">The team didn't get smaller.<br/><span class="em">The team got a new operating model.</span></div>
     <div class="end-sub">Engineer typed 5 short prompts. Zero lines of code by hand. Humans approved every gate. Real orchestration — not a one-shot generator.</div>
     <div class="end-stats">
-      <div class="end-stat"><div class="end-stat-v">~4h</div><div class="end-stat-l">CYCLE TIME</div></div>
+      <div class="end-stat"><div class="end-stat-v">~1h</div><div class="end-stat-l">CYCLE TIME</div></div>
       <div class="end-stat"><div class="end-stat-v">0</div><div class="end-stat-l">LINES TYPED</div></div>
       <div class="end-stat"><div class="end-stat-v">5</div><div class="end-stat-l">CLI PROMPTS</div></div>
       <div class="end-stat"><div class="end-stat-v">5</div><div class="end-stat-l">HUMAN GATES</div></div>
@@ -1379,9 +1379,9 @@ const SCRIPT = [
   { t: 132,  fn: 'subDone',  args: { id: 'report' } },
   { t: 132.5, fn: 'slackCmt', args: {
     cls: 'bot', who: 'Reporting Agent', pill: 'AGENT', pillCls: 'bot', time: '14:08',
-    body: '<strong>PROJ-1842 delivered ✓</strong><br/>Cycle: ~4h · Coverage: 91% · 0 prod incidents · 0 LOC typed by engineer.' } },
-  { t: 134,  fn: 'action',   args: { text: '✓ PROJ-1842 · DONE · cycle ~4h · 0 LOC typed', tone: 'ok' } },
-  { t: 135,  fn: 'cliAdd',   args: { html: '<div class="cli-final">✓ PROJ-1842 → Done · ~4 hours · 0 lines typed by hand</div>' } },
+    body: '<strong>PROJ-1842 delivered ✓</strong><br/>Cycle: ~1h · Coverage: 91% · 0 prod incidents · 0 LOC typed by engineer.' } },
+  { t: 134,  fn: 'action',   args: { text: '✓ PROJ-1842 · DONE · cycle ~1h · 0 LOC typed', tone: 'ok' } },
+  { t: 135,  fn: 'cliAdd',   args: { html: '<div class="cli-final">✓ PROJ-1842 → Done · ~1 hour · 0 lines typed by hand</div>' } },
 
   // ============= End card (138+) =============
   { t: 138,  fn: 'deploy',   args: { show: false } },

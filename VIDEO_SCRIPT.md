@@ -64,7 +64,7 @@
 > "DevOps sub-agent. Deploy checklist. Rollback plan. Release Manager approves in Slack. Canary five percent, twenty-five, one hundred. Zero anomalies. Jira ticket moves to Done. The Reporting sub-agent posts the delivery summary."
 
 ### 2:08 — END CARD (10s hold)
-> "Four hours. Five short CLI prompts. Zero lines of code typed by hand. Humans approved every gate. The team didn't get smaller. The team got a new operating model."
+> "One hour. Five short CLI prompts. Zero lines of code typed by hand. Humans approved every gate. The team didn't get smaller. The team got a new operating model."
 
 ---
 

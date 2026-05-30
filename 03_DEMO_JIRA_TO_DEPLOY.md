@@ -175,7 +175,7 @@ Deploy executes. Metrics monitored — no anomalies.
 
 | | |
 |---|---|
-| Total elapsed time | **~4 hours** |
+| Total elapsed time | **~1 hour** |
 | Engineer typing | **~5 short CLI prompts** (`start`, `continue`, `y`, `resolve`, occasional clarifications) |
 | Lines of code typed by hand | **0** |
 | Total human attention | **~30 minutes focused approvals & verification** |
